@@ -35,12 +35,13 @@ class HomeController extends Controller
         
         $value_of_data = [];
         $i = 0;
+        $indice_inicio_fotos = 2;
         $user_id = auth()->user()->id;
         $associated_file = auth()->user()->associated_file;
         $qtd_votes = auth()->user()->qtd_votes;
         $reloaded_flag = auth()->user()->reloaded_flag;
-
-        $pic_of_users = ComputeListOfUser::where('user_id', '=', $user_id)->get();
+        
+        $pic_of_users = DB::table('computelistofuser')->where('user_id', '=', $user_id)->get();
         //$last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->get();
         $last_file_item = DB::table('computelistofuser')->inRandomOrder()->where('user_id', '=', $user_id)->first();
 
@@ -52,11 +53,14 @@ class HomeController extends Controller
             $nome_foto="";
             $id_foto= "";
             
+            //criando a tabela com o nome da fotos
             foreach(file($associated_file) as $line) {
                 $value_of_data[$i] = $line;
+                list($foto, $result) = explode(":", $line);
                 ComputeListOfUser::create([
                     'user_id' => $user_id,
-                    'last_file' => $line
+                    'last_file' => $foto,
+                    'last_result' => $result
                 ]);
 
                 $i = $i + 1;
@@ -124,7 +128,7 @@ class HomeController extends Controller
         $image_fake = 1;
 
         $checks = 0;
-        $result_image = 1;
+        $result = 0;
         
 
         $conexoes = 1;
@@ -276,6 +280,12 @@ class HomeController extends Controller
             $image_real = 0;
         }
 
+        $result_db = ComputeListOfUser::where('id', '=', $id_foto)->value('last_result');
+        //$result_db = DB::select('select last_result from users where user_id = :id and last_file = :last_file', ['id' => $user_id, 'last_file' => $nome_foto]);
+        if(($result_db == 1 && $image_real == 1) || ($result_db == 0 && $image_fake == 1)){
+            $result = 1;
+        }
+
         $mensagem = '';
         if($checks > 24){
             $mensagem = "Selecione 3 ou mais caracteristicas, obrigado!";
@@ -290,6 +300,7 @@ class HomeController extends Controller
             'image_name' => $nome_foto,
             'image_real' => $image_real,
             'image_fake' => $image_fake,
+            'result' => $result,
             'andamentoGrafico' => $andamentoGrafico,
             'conexoes' => $conexoes,
             'ataques' => $ataques,
@@ -325,7 +336,7 @@ class HomeController extends Controller
         $votes_update = $qtd_votes + 1;
         User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
 
-        return redirect('home');
+        return redirect('/');
 
     }
 

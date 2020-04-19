@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 14-Out-2019 às 21:56
--- Versão do servidor: 10.4.6-MariaDB
--- versão do PHP: 7.1.31
+-- Tempo de geração: 19-Abr-2020 às 19:00
+-- Versão do servidor: 10.4.8-MariaDB
+-- versão do PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,6 +25,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `checkbox`
+--
+
+CREATE TABLE `checkbox` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `image_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `image_real` int(11) NOT NULL,
+  `image_fake` int(11) NOT NULL,
+  `result` int(2) NOT NULL,
+  `andamentoGrafico` int(11) NOT NULL,
+  `conexoes` int(11) NOT NULL,
+  `ataques` int(11) NOT NULL,
+  `remates` int(11) NOT NULL,
+  `posicionamento` int(11) NOT NULL,
+  `alinhamento` int(11) NOT NULL,
+  `valoresAngulares` int(11) NOT NULL,
+  `valoresCurvilineos` int(11) NOT NULL,
+  `alografos` int(11) NOT NULL,
+  `metodosConstrucao` int(11) NOT NULL,
+  `diacriticosPontuacao` int(11) NOT NULL,
+  `inclinacao` int(11) NOT NULL,
+  `dinamismoEvolucao` int(11) NOT NULL,
+  `pressao` int(11) NOT NULL,
+  `ritmoGrafico` int(11) NOT NULL,
+  `comportamentoPauta` int(11) NOT NULL,
+  `comportamentoBase` int(11) NOT NULL,
+  `grauHabilidade` int(11) NOT NULL,
+  `tendenciaPunho` int(11) NOT NULL,
+  `momentoGrafico` int(11) NOT NULL,
+  `variabilidade` int(11) NOT NULL,
+  `velocidade` int(11) NOT NULL,
+  `espacamentos` int(11) NOT NULL,
+  `linhasVerbais` int(11) NOT NULL,
+  `calibre` int(11) NOT NULL,
+  `morfologia` int(11) NOT NULL,
+  `natureza` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `computelistofuser`
 --
 
@@ -32,6 +76,7 @@ CREATE TABLE `computelistofuser` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
   `last_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `last_result` int(2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -75,6 +120,19 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `teste`
+--
+
+CREATE TABLE `teste` (
+  `user_id` int(11) NOT NULL,
+  `image_name` varchar(255) NOT NULL,
+  `andamentoGrafico` int(11) NOT NULL,
+  `conexoes` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `users`
 --
 
@@ -113,6 +171,12 @@ CREATE TABLE `votes` (
 --
 
 --
+-- Índices para tabela `checkbox`
+--
+ALTER TABLE `checkbox`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices para tabela `computelistofuser`
 --
 ALTER TABLE `computelistofuser`
@@ -148,28 +212,34 @@ ALTER TABLE `votes`
 --
 
 --
+-- AUTO_INCREMENT de tabela `checkbox`
+--
+ALTER TABLE `checkbox`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+
+--
 -- AUTO_INCREMENT de tabela `computelistofuser`
 --
 ALTER TABLE `computelistofuser`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT de tabela `lastfilefromuser`
 --
 ALTER TABLE `lastfilefromuser`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de tabela `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

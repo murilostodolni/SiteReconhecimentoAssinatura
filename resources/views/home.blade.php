@@ -142,7 +142,7 @@ $('.eleve-image').elevateZoom({
                       }else{
                         ?>
                         Assinatura Genuina ->
-                        <img id="zoom_01" src="{{$file_test_atual}}" data-zoom-image="large/image1.jpg" class="eleve-image" />
+                        <img src="{{$file_test_atual}}" class="image_test" />
                         
                         Assinatura para Analise ->
                         <img src="{{$file_test_atual_dupla}}" class="image_test" />
