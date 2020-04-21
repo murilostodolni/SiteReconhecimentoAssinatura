@@ -108,19 +108,21 @@
   color: #fff;
   background-color: #5bc0de;
 }
+
+
+.img-container img{
+  width: 40%;
+   height: 40%;
+   -webkit-transition: -webkit-transform .5s ease;
+   transition: transform .5s ease;
+}
+
+.img-container:hover img{
+   -webkit-transform: scale(3);
+   transform: scale(3);
+}
+
 </style>
-
-
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-<script  type="text/javascript" src="jquery.js"></script>
-<script src="jquery.elevatezoom.js" type="text/javascript"></script>
-<script>
-$('.eleve-image').elevateZoom({
-  zoomType: "inner",
-  cursor: "crosshair"
-});
-</script>
 
 @if (Auth::user()->reloaded_flag == 0)
 <script>window.location = "{{url('/reload')}}";</script>
@@ -133,7 +135,7 @@ $('.eleve-image').elevateZoom({
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Formulario</div>
+                <div class="panel-heading"><h4>Clique na imagem para aumentar</h4></div>
 
                 <div class="panel-body textcenter">
                 <?php
@@ -141,11 +143,25 @@ $('.eleve-image').elevateZoom({
                         echo(' ');
                       }else{
                         ?>
-                        Assinatura Genuina ->
-                        <img src="{{$file_test_atual}}" class="image_test" />
-                        
-                        Assinatura para Analise ->
-                        <img src="{{$file_test_atual_dupla}}" class="image_test" />
+                        <table>
+                        <tr>
+                        <div class="img-container">
+                          <figure>
+                            <figcaption><h4>Assinatura Genuina</h4></figcaption>
+                            <img src="{{$file_test_atual}}"/>
+                          </figure>
+                        </div>
+                        </tr>
+                        <tr>
+                        <div class="img-container">
+                          <figure>
+                            <figcaption><h4>Assinatura para Analise</h4></figcaption>
+                            <img src="{{$file_test_atual_dupla}}"/>
+                            
+                          </figure>
+                        </div>  
+                        </tr>
+                        </table>   
                         <?php
                       }
                     ?>
@@ -162,11 +178,11 @@ $('.eleve-image').elevateZoom({
                             <h3> Assinatura foi feita com o mesmo punho? </h3>
                             <div class="funkyradio">
                                 <div class="funkyradio-success">
-                                  <input type="radio" name="info_image" value=image_real id="radio3" />
+                                  <input type="radio" name="info_image" value="image_real" id="radio3" />
                                   <label for="radio3">Sim</label>
                                 </div>
                                 <div class="funkyradio-danger">
-                                    <input type="radio" name="info_image" value=image_fake id="radio4" />
+                                    <input type="radio" name="info_image" value="image_fake" id="radio4" />
                                     <label for="radio4">Não</label>
                                 </div>
                             </div>

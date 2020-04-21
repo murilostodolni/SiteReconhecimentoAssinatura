@@ -109,6 +109,10 @@ class HomeController extends Controller
         return redirect('home');
     }
 
+    public function newvote(){
+        return redirect('newvote');
+    }
+
     public function reload(){
         $user_id = auth()->user()->id;
         User::where('id', $user_id)->update(['reloaded_flag' => 1]);
@@ -117,7 +121,7 @@ class HomeController extends Controller
     }
 
     public function post_checkbox(Request $request){
-        
+            
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
 
@@ -130,7 +134,6 @@ class HomeController extends Controller
         $checks = 0;
         $result = 0;
         
-
         $conexoes = 1;
         $andamentoGrafico = 1;
         $ataques = 1;
@@ -247,7 +250,6 @@ class HomeController extends Controller
             $variabilidade = 0;
             $checks = $checks + 1;
         }
-
         if ($request->velocidade == null){
             $velocidade = 0;
             $checks = $checks + 1;
@@ -271,19 +273,33 @@ class HomeController extends Controller
         if ($request->natureza == null){
             $natureza = 0;
             $checks = $checks + 1;
-        }
-        
+        }       
 
-        if ($request->info_image == 'image_real'){
+        $info_image = $request->info_image;
+
+        if (strcmp($info_image, 'image_real') == 0){
             $image_fake = 0;
-        } elseif ($request->info_image == 'image_fake'){
+        } elseif (strcmp($info_image, 'image_fake') == 0){
             $image_real = 0;
         }
 
+        //colocando se o user acertou ou errou o voto
         $result_db = ComputeListOfUser::where('id', '=', $id_foto)->value('last_result');
-        //$result_db = DB::select('select last_result from users where user_id = :id and last_file = :last_file', ['id' => $user_id, 'last_file' => $nome_foto]);
         if(($result_db == 1 && $image_real == 1) || ($result_db == 0 && $image_fake == 1)){
             $result = 1;
+        }
+
+        //adicionar ao user a quantidade de acertos e erros
+        //como o $result informa ao banco se o usuario acertou ou erro
+        //se o result == 1 (usuario acertou) e caso contrario errou
+        if($result == 1){
+            $qtd_acertos = User::where('id', '=', $user_id)->value('qtd_acertos');
+            $qtd_acertos = $qtd_acertos + 1;
+            User::where('id', $user_id)->update(['qtd_acertos' => $qtd_acertos]);
+        }else{
+            $qtd_erros = User::where('id', '=', $user_id)->value('qtd_erros');
+            $qtd_erros = $qtd_erros + 1;
+            User::where('id', $user_id)->update(['qtd_erros' => $qtd_erros]);
         }
 
         $mensagem = '';
@@ -295,6 +311,7 @@ class HomeController extends Controller
             return view('view_intermediaria', compact('mensagem'));
         }
 
+        //criando tabela com as informacoes do voto do user
         CheckBoxTable::create([
             'user_id' => $user_id,
             'image_name' => $nome_foto,
@@ -336,8 +353,10 @@ class HomeController extends Controller
         $votes_update = $qtd_votes + 1;
         User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
 
-        return redirect('/');
-
+        if($votes_update < 6){
+            return redirect('/');
+        }else{
+            return redirect('home');
+        }
     }
-
 }

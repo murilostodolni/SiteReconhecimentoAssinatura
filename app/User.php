@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'associated_file', 'finished', 'qtd_votes','reloaded_flag',
+        'name', 'email', 'password', 'associated_file', 'finished', 'qtd_votes', 'qtd_acertos', 'qtd_erros','reloaded_flag',
     ];
 
     /**

@@ -90,6 +90,8 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
             'finished' => FALSE,
             'qtd_votes' => 0,
+            'qtd_acertos' => 0,
+            'qtd_erros' => 0,
             'reloaded_flag' => 0
         ]);
     }

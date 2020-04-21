@@ -19,6 +19,7 @@ Route::auth();
 
 Route::post('/post_checkbox', 'HomeController@post_checkbox');
 Route::get('/get_vote/{nomeFoto}/{vote}/{idFoto}', 'HomeController@get_vote');
+Route::get('/newvote', 'HomeController@newvote');
 Route::get('/home', 'HomeController@index');
 Route::get('/vote_intermediate', 'HomeController@vote_intermediate');
 Route::get('/reload', 'HomeController@reload');
