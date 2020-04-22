@@ -12,7 +12,7 @@
 }
 
 .funkyradio label {
-  width: 45%;
+  width: 85%;
   border-radius: 3px;
   border: 1px solid #D1D3D4;
   font-weight: normal;
@@ -135,7 +135,12 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>Clique na imagem para aumentar</h4></div>
+            
+                    <?php if ($nome_foto == ""){?>
+                        <div class="panel-heading"><h4>Obrigado!</h4></div>
+                    <?php } else{?>
+                        <div class="panel-heading"><h4>Clique na imagem para aumentar</h4></div>
+                    <?php } ?>
 
                 <div class="panel-body textcenter">
                 <?php
@@ -147,7 +152,7 @@
                         <tr>
                         <div class="img-container">
                           <figure>
-                            <figcaption><h4>Assinatura Genuina</h4></figcaption>
+                            <figcaption><h4>Assinatura 1:</h4></figcaption>
                             <img src="{{$file_test_atual}}"/>
                           </figure>
                         </div>
@@ -155,7 +160,7 @@
                         <tr>
                         <div class="img-container">
                           <figure>
-                            <figcaption><h4>Assinatura para Analise</h4></figcaption>
+                            <figcaption><h4>Assinatura 2:</h4></figcaption>
                             <img src="{{$file_test_atual_dupla}}"/>
                             
                           </figure>
@@ -333,6 +338,7 @@
 
                               <input type="hidden" name="nome_foto" value="{{$nome_foto}}">
                               <input type="hidden" name="id_foto" value="{{$id_foto}}">
+                              <br>
                               <button>Enviar Resposta</button>
                           </form>
                         <?php

@@ -40,7 +40,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <p><img src="assets/images/logo.png" width = 18%/>Pesquisa | Pós-Graduação - UPE</p>
+                    <p><img src="assets/images/logo.png" width = 16%/> Pesquisa | Pós-Graduação</p>
                 </a>
             </div>
 

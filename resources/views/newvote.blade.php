@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Bem vindo!</div>
+                <div class="panel-heading">Agradecemos pela analise!</div>
 
                 <div class="panel-body">
-                        Deseja votar novamente?
-                        <a href="{{url('/home')}}">Sim</a>
-                        <a href="{{url('/')}}">Não</a>
+                        Deseja fazer outra analise?
+                        <br>
+                        <br>
+                        <button><a href="{{url('home')}}">Sim</a></button> &emsp;&emsp;
+                        <button><a href="{{url('/')}}">Não</a></button>
                 </div>
             </div>
         </div>

@@ -354,7 +354,7 @@ class HomeController extends Controller
         User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
 
         if($votes_update < 6){
-            return redirect('/');
+            return redirect('newvote');
         }else{
             return redirect('home');
         }

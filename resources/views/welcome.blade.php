@@ -8,7 +8,7 @@
                 <div class="panel-heading">Bem vindo!</div>
 
                 <div class="panel-body">
-                        Clique <a href="{{url('/home')}}">aqui</a> para votar.
+                        Clique <a href="{{url('/home')}}">aqui</a> para começar a analise das assinaturas.
                 </div>
             </div>
         </div>
