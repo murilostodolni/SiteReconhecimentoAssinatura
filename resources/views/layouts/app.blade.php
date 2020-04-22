@@ -40,17 +40,12 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Pesquisa | Pós-Graduação - UPE
+                    <p><img src="assets/images/logo.png" width = 18%/>Pesquisa | Pós-Graduação - UPE</p>
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Inicio</a></li>
-                </ul>
-
-                <!-- Right Side Of Navbar -->
+                                <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
