@@ -139,7 +139,7 @@
                     <?php if ($nome_foto == ""){?>
                         <div class="panel-heading"><h4>Obrigado!</h4></div>
                     <?php } else{?>
-                        <div class="panel-heading"><h4>Clique na imagem para aumentar</h4></div>
+                        <div class="panel-heading"><h4>Toque ou passe o mouse sobre a imagem das assinaturas para aumentar</h4></div>
                     <?php } ?>
 
                 <div class="panel-body textcenter">
@@ -180,7 +180,7 @@
                           <form method="POST" action="{{url('post_checkbox')}}">
                             {{ csrf_field() }}
 
-                            <h3> Assinatura foi feita com o mesmo punho? </h3>
+                            <h3>A assinatura foi feita pelo mesmo punho escritor?</h3>
                             <div class="funkyradio">
                                 <div class="funkyradio-success">
                                   <input type="radio" name="info_image" value="image_real" id="radio3" />
@@ -192,8 +192,8 @@
                                 </div>
                             </div>
 
-                            <h3> Caracteristicas Utilizadas </h3>
-                            <h5>(selecione 3 ou mais)</h5>
+                            <h3>Selecione quais foram os criterios utilizados em sua analise:</h3>
+                            <h5>(selecione todos os criterios utilizados)</h5>
 
                             <table width=100%>
                               <tr>

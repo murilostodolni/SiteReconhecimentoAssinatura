@@ -94,7 +94,7 @@ class HomeController extends Controller
         $im_restantes = count($has_images);
         $mensagem_foto = '';
         if ($im_restantes == 0){
-            $mensagem_foto = "Você já terminou de votar, obrigado!\nRealize outra avaliação";
+            $mensagem_foto = "Continue ajudando nossa pesquisa respondendo a um questionário técnico";
         }
 
         $reload = '';
@@ -189,7 +189,7 @@ class HomeController extends Controller
             $checks = $checks + 1;
         }
         if ($request->valoresAngulares == null){
-            $valoresAngualares = 0;
+            $valoresAngulares = 0;
             $checks = $checks + 1;
         }
         if ($request->valoresCurvilineos == null){
