@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\NameImages;
+use App\ComputeListOfUser;
 use App\User;
-use App\Lastfilefromuser;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
 
 class AuthController extends Controller
 {
@@ -64,46 +66,29 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-
-        #$files = glob($dir . 'assets/files/*.*');
-        $max_file = 5;
-        $last_file = Lastfilefromuser::orderBy('created_at', 'desc')->first();
-        $splitted = explode (".", $last_file['last_file']);  
-        $last_file_int = (int)$splitted[0];
-
-        if($last_file_int == $max_file){
-            $next_file = 1;
-        }else{
-            $next_file = $last_file_int + 1;
-        }
-
-        Lastfilefromuser::create([
-            'last_file' => $next_file
-        ]);
-
-
+        //cria a lista de imagens uma unica vez!
+        $id = 1;
+        $info = NameImages::where('id', '=', $id)->get();
+        $quant_votes = 5;
         
-        /*//testando nomes images no banco de dados
-        if($last_file_int < 1){
-            foreach(file('assets/files/teste.txt') as $line) {
-                ComputeListOfUser::create([
-                    'name' => $line,
-                    'quant_votes' => 5
+        if(count($info) < 1){
+            foreach(file('assets/files/name_images.txt') as $line) {
+                list($foto, $result) = explode(":", $line);
+                NameImages::create([
+                    'name' => $foto,
+                    'quant_votes' => $quant_votes,
+                    'result' => $result,
                 ]);
             }
-        }   */
-
+        }
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'associated_file' => 'assets/files/'.$next_file.'.txt',
             'password' => bcrypt($data['password']),
-            'finished' => FALSE,
             'qtd_votes' => 0,
             'qtd_acertos' => 0,
             'qtd_erros' => 0,
-            'reloaded_flag' => 0,
             'uf' => $data['uf'],
             'atuacao' => $data['atuacao'],
             'idade' => $data['idade'],

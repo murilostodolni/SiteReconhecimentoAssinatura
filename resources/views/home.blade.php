@@ -124,12 +124,6 @@
 
 </style>
 
-@if (Auth::user()->reloaded_flag == 0)
-<script>window.location = "{{url('/reload')}}";</script>
-@endif
-
-
-
 
 <div class="container">
     <div class="row">

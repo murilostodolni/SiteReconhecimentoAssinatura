@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Lastfilefromuser;
 use App\ComputeListOfUser;
-use App\VoteTable;
+use App\NameImages;
 use App\CheckBoxTable;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -33,130 +32,100 @@ class HomeController extends Controller
 
     public function index()
     {
-        
-        $value_of_data = [];
-        $i = 0;
-        $indice_inicio_fotos = 2;
         $user_id = auth()->user()->id;
-        $associated_file = auth()->user()->associated_file;
         $qtd_votes = auth()->user()->qtd_votes;
-        $reloaded_flag = auth()->user()->reloaded_flag;
-        
-        $pic_of_users = DB::table('computelistofuser')->where('user_id', '=', $user_id)->get();
-        //$last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->get();
-        $last_file_item = DB::table('computelistofuser')->inRandomOrder()->where('user_id', '=', $user_id)->first();
 
+        $max_votes = 10;
         
-        if(count($pic_of_users) == 0 && $qtd_votes == 0){
+        $pic_of_users = ComputeListOfUser::where('user_id', '=', $user_id)->get();
 
-            $file_test_atual_dupla = "";
-            $file_test_atual = "";
-            $nome_foto="";
-            $id_foto= "";
-            
-            //criando a tabela com o nome da fotos
-            foreach(file($associated_file) as $line) {
-                $value_of_data[$i] = $line;
-                list($foto, $result) = explode(":", $line);
+        //caso não tenha mais nenhuma foto para o usuario, vai direto para a pag. final
+        if(count($pic_of_users) == 0 && $qtd_votes == $max_votes){
+            return redirect('final');
+
+        }elseif(count($pic_of_users) == 0 && $qtd_votes == 0){
+
+            $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
+
+            foreach($images as $k) {
                 ComputeListOfUser::create([
                     'user_id' => $user_id,
-                    'last_file' => $foto,
-                    'last_result' => $result
+                    'last_file' => $k->name,
+                    'last_result' => $k->result,
                 ]);
-
-                $i = $i + 1;
             }
-
-        }else{
-
-            if ($last_file_item){
-                $file_test_atual = $last_file_item->last_file;
-                $file_test_atual_dupla = '(1)'.$file_test_atual;
-                $file_test_atual_dupla = 'assets/images/'.$file_test_atual_dupla;
-                $file_test_atual = 'assets/images/'.$file_test_atual;
-                $nome_foto = $last_file_item->last_file;
-                $id_foto = $last_file_item->id;
-
-                
-
-            }else{
-                $file_test_atual = "";
-                $file_test_atual_dupla = "";
-                $nome_foto="";
-                $id_foto= "";
-            }
-
         }
-    
-        //$mensagem = '';
+
+        $last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->first();
+
+        //TODO NÃO PRECISA if ($last_file_item){
+        $file_test_atual = $last_file_item->last_file;
+        $file_test_atual_dupla = '(1)'.$file_test_atual;
+        $file_test_atual_dupla = 'assets/images/'.$file_test_atual_dupla;
+        $file_test_atual = 'assets/images/'.$file_test_atual;
+        $nome_foto = $last_file_item->last_file;
+        $id_foto = $last_file_item->id;
+
+        $exist_info = CheckBoxTable::where('user_id', '=', $user_id)->where('image_name', '=', $nome_foto)->get();
+
+        if(count($exist_info) < 1){
+            //criando tabela com as informacoes do voto do user
+            CheckBoxTable::create([
+                'user_id' => $user_id,
+                'image_name' => $nome_foto,
+                'image_real' => 0,
+                'image_fake' => 0,
+                'result' => 0,
+                'andamentoGrafico' => 0,
+                'conexoes' => 0,
+                'ataques' => 0,
+                'remates' => 0,
+                'posicionamento' => 0,
+                'alinhamento' => 0,
+                'valoresAngulares' => 0,
+                'valoresCurvilineos' => 0,
+                'alografos' => 0,
+                'metodosConstrucao' => 0,
+                'diacriticosPontuacao' => 0,
+                'inclinacao' => 0,
+                'dinamismoEvolucao' => 0,
+                'pressao' => 0,
+                'ritmoGrafico' => 0,
+                'comportamentoPauta' => 0,
+                'comportamentoBase' => 0,
+                'grauHabilidade' => 0,
+                'tendenciaPunho' => 0,
+                'momentoGrafico' => 0,
+                'variabilidade' => 0,
+                'velocidade' => 0,
+                'espacamentos' => 0,
+                'linhasVerbais' => 0,
+                'calibre' => 0,
+                'morfologia' => 0,
+                'natureza' => 0
+            ]);
+        }
         
-
-        $has_images = ComputeListOfUser::where('user_id', '=', $user_id)->get();
-        $im_restantes = count($has_images);
-        //$mensagem_foto = '';
-        if ($im_restantes == 0){
-            return redirect('final');
-            //$mensagem_foto = "Continue ajudando nossa pesquisa respondendo a um questionário técnico";
-        }
-
-        $reload = '';
-        if ($reloaded_flag  == 0){
-            $reload = 0;
-        }
-        
-        //criando tabela com as informacoes do voto do user
-        CheckBoxTable::create([
-            'user_id' => $user_id,
-            'image_name' => $nome_foto,
-            'image_real' => 0,
-            'image_fake' => 0,
-            'result' => 0,
-            'andamentoGrafico' => 0,
-            'conexoes' => 0,
-            'ataques' => 0,
-            'remates' => 0,
-            'posicionamento' => 0,
-            'alinhamento' => 0,
-            'valoresAngulares' => 0,
-            'valoresCurvilineos' => 0,
-            'alografos' => 0,
-            'metodosConstrucao' => 0,
-            'diacriticosPontuacao' => 0,
-            'inclinacao' => 0,
-            'dinamismoEvolucao' => 0,
-            'pressao' => 0,
-            'ritmoGrafico' => 0,
-            'comportamentoPauta' => 0,
-            'comportamentoBase' => 0,
-            'grauHabilidade' => 0,
-            'tendenciaPunho' => 0,
-            'momentoGrafico' => 0,
-            'variabilidade' => 0,
-            'velocidade' => 0,
-            'espacamentos' => 0,
-            'linhasVerbais' => 0,
-            'calibre' => 0,
-            'morfologia' => 0,
-            'natureza' => 0
-        ]);
-
-        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto', 'reload'));
+        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto'));
     }
 
+    //TODO ver para tirar
     public function vote_intermediate(){
         return redirect('home');
     }
 
+    //TODO ver para tirar
     public function newvote(){
         return redirect('newvote');
     }
 
-    public function reload(){
+    //TODO ver para tirar
+    /*public function reload(){
         $user_id = auth()->user()->id;
         User::where('id', $user_id)->update(['reloaded_flag' => 1]);
 
         return redirect('home');
-    }
+    }*/
 
     public function post_checkbox(Request $request){
             
@@ -165,9 +134,6 @@ class HomeController extends Controller
 
         $nome_foto = $request->nome_foto;
         $id_foto = $request->id_foto;
-
-        $image_real = 1;
-        $image_fake = 1;
 
         $checks = 0;
         $result = 0;
@@ -311,13 +277,16 @@ class HomeController extends Controller
         if ($request->natureza == null){
             $natureza = 0;
             $checks = $checks + 1;
-        }       
+        }
+
+        $image_real = 1;
+        $image_fake = 1;
 
         $info_image = $request->info_image;
 
-        if (strcmp($info_image, 'image_real') == 0){
+        if ($info_image == 'image_real'){
             $image_fake = 0;
-        } elseif (strcmp($info_image, 'image_fake') == 0){
+        } elseif ($info_image == 'image_fake'){
             $image_real = 0;
         }
 
@@ -339,7 +308,10 @@ class HomeController extends Controller
             $qtd_erros = $qtd_erros + 1;
             User::where('id', $user_id)->update(['qtd_erros' => $qtd_erros]);
         }
-
+        
+        //se não tiver a variavel mensagem dá erro.....
+        //if: caso o usuario não tenha escolhido 5 criterios
+        //elseif: caso o usuario não tenha selecionado sim ou não
         $mensagem = '';
         if($checks > 22){
             $mensagem = "Selecione 5 ou mais caracteristicas, obrigado!";
@@ -349,13 +321,23 @@ class HomeController extends Controller
             return view('view_intermediaria', compact('mensagem'));
         }
 
-        //$info = CheckBoxTable::where('user_id', '=', $user_id)->latest();
-        //echo $info;
-        //$id_linha = $info->id;
+        //diminuindo um voto da imagem que foi votada na tabela name_images
+        $quant_votes = NameImages::where('name', '=', $nome_foto)->value('quant_votes');
+        $quant_votes = $quant_votes - 1;
+        NameImages::where('name', '=', $nome_foto)->update(['quant_votes' => $quant_votes]);
 
-        CheckBoxTable::where('nome_foto', $nome_foto)->lastest()->update([
-            'user_id' => $user_id,
-            'image_name' => $nome_foto,
+        //procurando o id do checkbox para fazer o update das informacoes
+        $info = CheckBoxTable::where('user_id', '=', $user_id)->get();
+        foreach ($info as $i)
+        {
+            if($i->image_name == $nome_foto){
+                $id_check_box = $i->id;
+                break;
+            }
+        }
+
+        //TODO PODERIA TIRAR OS IFS, POREM IRIA FICAR NULL PARA NÃO MARCADO OU 1 PARA MARCADO, FAÇO???
+        CheckBoxTable::where('id', $id_check_box)->update([
             'image_real' => $image_real,
             'image_fake' => $image_fake,
             'result' => $result,
@@ -394,7 +376,18 @@ class HomeController extends Controller
         $votes_update = $qtd_votes + 1;
         User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
 
-        if($votes_update < 6){
+        //TODO fazer operacao com o tempo!
+        /*$time = CheckBoxTable::where('id', $id_check_box)->get();
+        $time_created = $time->created_at;
+        $time_finished = $time->updated_at;
+
+        $time_total = strtotime($time_finished) - strtotime($time_created);
+        $dte = new datetime(date('H:i:s'));
+        $dte = $time_total;
+        print "Total " . $dte . "<br>";*/
+
+
+        if($votes_update < 10){
             return redirect('newvote');
         }else{
             return redirect('home');
