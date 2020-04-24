@@ -30,6 +30,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         
@@ -87,22 +88,59 @@ class HomeController extends Controller
 
         }
     
-        $mensagem = '';
+        //$mensagem = '';
         
 
         $has_images = ComputeListOfUser::where('user_id', '=', $user_id)->get();
         $im_restantes = count($has_images);
-        $mensagem_foto = '';
+        //$mensagem_foto = '';
         if ($im_restantes == 0){
-            $mensagem_foto = "Continue ajudando nossa pesquisa respondendo a um questionário técnico";
+            return redirect('final');
+            //$mensagem_foto = "Continue ajudando nossa pesquisa respondendo a um questionário técnico";
         }
 
         $reload = '';
         if ($reloaded_flag  == 0){
             $reload = 0;
         }
+        
+        //criando tabela com as informacoes do voto do user
+        CheckBoxTable::create([
+            'user_id' => $user_id,
+            'image_name' => $nome_foto,
+            'image_real' => 0,
+            'image_fake' => 0,
+            'result' => 0,
+            'andamentoGrafico' => 0,
+            'conexoes' => 0,
+            'ataques' => 0,
+            'remates' => 0,
+            'posicionamento' => 0,
+            'alinhamento' => 0,
+            'valoresAngulares' => 0,
+            'valoresCurvilineos' => 0,
+            'alografos' => 0,
+            'metodosConstrucao' => 0,
+            'diacriticosPontuacao' => 0,
+            'inclinacao' => 0,
+            'dinamismoEvolucao' => 0,
+            'pressao' => 0,
+            'ritmoGrafico' => 0,
+            'comportamentoPauta' => 0,
+            'comportamentoBase' => 0,
+            'grauHabilidade' => 0,
+            'tendenciaPunho' => 0,
+            'momentoGrafico' => 0,
+            'variabilidade' => 0,
+            'velocidade' => 0,
+            'espacamentos' => 0,
+            'linhasVerbais' => 0,
+            'calibre' => 0,
+            'morfologia' => 0,
+            'natureza' => 0
+        ]);
 
-        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto','mensagem', 'im_restantes', 'mensagem_foto', 'reload'));
+        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto', 'reload'));
     }
 
     public function vote_intermediate(){
@@ -303,16 +341,19 @@ class HomeController extends Controller
         }
 
         $mensagem = '';
-        if($checks > 24){
-            $mensagem = "Selecione 3 ou mais caracteristicas, obrigado!";
+        if($checks > 22){
+            $mensagem = "Selecione 5 ou mais caracteristicas, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }elseif ($image_fake == 1 && $image_real == 1){
             $mensagem = "Selecione uma opcao no resultado final, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }
 
-        //criando tabela com as informacoes do voto do user
-        CheckBoxTable::create([
+        //$info = CheckBoxTable::where('user_id', '=', $user_id)->latest();
+        //echo $info;
+        //$id_linha = $info->id;
+
+        CheckBoxTable::where('nome_foto', $nome_foto)->lastest()->update([
             'user_id' => $user_id,
             'image_name' => $nome_foto,
             'image_real' => $image_real,
@@ -360,3 +401,4 @@ class HomeController extends Controller
         }
     }
 }
+?>

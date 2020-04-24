@@ -135,19 +135,8 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-            
-                    <?php if ($nome_foto == ""){?>
-                        <div class="panel-heading"><h4>Obrigado!</h4></div>
-                    <?php } else{?>
-                        <div class="panel-heading"><h4>Toque ou passe o mouse sobre a imagem das assinaturas para aumentar</h4></div>
-                    <?php } ?>
-
+                <div class="panel-heading"><h4>Toque ou passe o mouse sobre a imagem das assinaturas para aumentar</h4></div>
                 <div class="panel-body textcenter">
-                <?php
-                      if ($file_test_atual== "" || $file_test_atual_dupla== "" || $nome_foto == ""){
-                        echo(' ');
-                      }else{
-                        ?>
                         <table>
                         <tr>
                         <div class="img-container">
@@ -167,16 +156,7 @@
                         </div>  
                         </tr>
                         </table>   
-                        <?php
-                      }
-                    ?>
                 </div>
-                
-                    <?php
-                      if ($file_test_atual== "" || $file_test_atual_dupla== "" || $nome_foto == ""){
-                        echo(' ');
-                      }else{
-                        ?>
                           <form method="POST" action="{{url('post_checkbox')}}">
                             {{ csrf_field() }}
 
@@ -193,7 +173,7 @@
                             </div>
 
                             <h3>Selecione quais foram os criterios utilizados em sua analise:</h3>
-                            <h5>(selecione todos os criterios utilizados)</h5>
+                            <h5>Selecione no mínimo 5 (cinco) criterios</h5>
 
                             <table width=100%>
                               <tr>
@@ -341,19 +321,6 @@
                               <br>
                               <button>Enviar Resposta</button>
                           </form>
-                        <?php
-                      }
-                    ?>
-                  <div class="textcenter">
-                    <p>{{$mensagem_foto}}</p>
-                    <?php
-                      if ($file_test_atual== "" || $file_test_atual_dupla== "" || $nome_foto == ""){?>
-                        <a href="https://forms.gle/u45FsmN21yrk7m878"> CLICANDO AQUI</a>
-                    <?php
-                      }?>
-                        
-                    
-                  </div>
             </div>
         </div>
     </div>

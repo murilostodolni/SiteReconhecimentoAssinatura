@@ -77,10 +77,21 @@ class AuthController extends Controller
             $next_file = $last_file_int + 1;
         }
 
-
         Lastfilefromuser::create([
             'last_file' => $next_file
         ]);
+
+
+        
+        /*//testando nomes images no banco de dados
+        if($last_file_int < 1){
+            foreach(file('assets/files/teste.txt') as $line) {
+                ComputeListOfUser::create([
+                    'name' => $line,
+                    'quant_votes' => 5
+                ]);
+            }
+        }   */
 
 
         return User::create([
@@ -92,7 +103,19 @@ class AuthController extends Controller
             'qtd_votes' => 0,
             'qtd_acertos' => 0,
             'qtd_erros' => 0,
-            'reloaded_flag' => 0
+            'reloaded_flag' => 0,
+            'uf' => $data['uf'],
+            'atuacao' => $data['atuacao'],
+            'idade' => $data['idade'],
+            'sexo' => $data['sexo'],
+            'escolaridade' => $data['escolaridade'],
+            'disciplina' => $data['disciplina'],
+            'abordagem' => $data['abordagem'],
+            'formacao' => $data['formacao'],
+            'area' => $data['area'],
+            'tempo' => $data['tempo'],
+            'setor' => $data['setor'],
+            'experiencia' => $data['experiencia'],
         ]);
     }
 }

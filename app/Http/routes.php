@@ -19,6 +19,14 @@ Route::get('newvote', function () {
     return view('newvote');
 });
 
+Route::get('final', function () {
+    return view('final');
+});
+
+Route::get('termo', function () {
+    return view('termo');
+});
+
 Route::auth();
 
 Route::post('/post_checkbox', 'HomeController@post_checkbox');
