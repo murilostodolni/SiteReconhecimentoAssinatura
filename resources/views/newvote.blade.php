@@ -12,7 +12,8 @@
                         <br>
                         <br>
                         <button><a href="{{url('home')}}">Sim</a></button> &emsp;&emsp;
-                        <button><a href="{{url('final')}}">Não</a></button>
+                        <button><a href="{{url('/')}}">Depois</a></button> &emsp;&emsp;
+                        <button><a href="{{url('finalizar_votacao')}}" style="color:red">Não desejo mais fazer analises</a></button>
                 </div>
             </div>
         </div>

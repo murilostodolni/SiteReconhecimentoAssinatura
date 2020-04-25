@@ -1,5 +1,7 @@
 
 <script LANGUAGE='JavaScript'>
+    //exibe mensagem
     window.alert('{{$mensagem}}');
-    window.location.href="{{url('home')}}";
+    //volta para a pagina anterior sem perder as informacoes marcadas
+    window.history.back();
 </script>

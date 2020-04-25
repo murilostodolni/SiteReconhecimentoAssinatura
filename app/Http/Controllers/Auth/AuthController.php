@@ -52,9 +52,21 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'name' => 'required|max:50',
+            'email' => 'required|email|max:50|unique:users',
             'password' => 'required|min:6|confirmed',
+            'uf' => 'required',
+            'atuacao' => 'required|max:30',
+            'idade' => 'required|numeric',
+            'sexo' => 'required',
+            'escolaridade' => 'required',
+            'disciplina' => 'required',
+            'abordagem' => 'required',
+            'formacao' => 'required|max:50',
+            'area' => 'required',
+            'tempo' => 'required',
+            'setor' => 'required',
+            'experiencia' => 'required',
         ]);
     }
 
@@ -82,10 +94,14 @@ class AuthController extends Controller
             }
         }
 
+        //aviso sobre violacao de senha parou depois disso...
+        $password = bcrypt($data['password']);
+        //$password = $data['password'];
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => $password,
             'qtd_votes' => 0,
             'qtd_acertos' => 0,
             'qtd_erros' => 0,

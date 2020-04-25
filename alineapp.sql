@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22-Abr-2020 às 05:53
+-- Tempo de geração: 25-Abr-2020 às 18:59
 -- Versão do servidor: 10.4.8-MariaDB
 -- versão do PHP: 7.3.11
 
@@ -35,6 +35,7 @@ CREATE TABLE `checkbox` (
   `image_real` int(11) NOT NULL,
   `image_fake` int(11) NOT NULL,
   `result` int(2) NOT NULL,
+  `tempo_voto` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `andamentoGrafico` int(11) NOT NULL,
   `conexoes` int(11) NOT NULL,
   `ataques` int(11) NOT NULL,
@@ -84,19 +85,6 @@ CREATE TABLE `computelistofuser` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `lastfilefromuser`
---
-
-CREATE TABLE `lastfilefromuser` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `last_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `migrations`
 --
 
@@ -104,6 +92,21 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `name_images`
+--
+
+CREATE TABLE `name_images` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `quant_votes` int(2) NOT NULL,
+  `result` int(2) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -120,19 +123,6 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `teste`
---
-
-CREATE TABLE `teste` (
-  `user_id` int(11) NOT NULL,
-  `image_name` varchar(255) NOT NULL,
-  `andamentoGrafico` int(11) NOT NULL,
-  `conexoes` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `users`
 --
 
@@ -141,29 +131,22 @@ CREATE TABLE `users` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `associated_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `finished` tinyint(1) NOT NULL,
   `qtd_votes` int(11) NOT NULL,
   `qtd_acertos` int(11) NOT NULL,
   `qtd_erros` int(11) NOT NULL,
-  `reloaded_flag` int(11) NOT NULL,
+  `uf` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `idade` int(2) NOT NULL,
+  `atuacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sexo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `escolaridade` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `disciplina` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `abordagem` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `formacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `area` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tempo` int(2) NOT NULL,
+  `setor` int(2) NOT NULL,
+  `experiencia` int(2) NOT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `votes`
---
-
-CREATE TABLE `votes` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `image_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `vote` tinyint(1) NOT NULL,
-  `result` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -185,9 +168,9 @@ ALTER TABLE `computelistofuser`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `lastfilefromuser`
+-- Índices para tabela `name_images`
 --
-ALTER TABLE `lastfilefromuser`
+ALTER TABLE `name_images`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -202,12 +185,6 @@ ALTER TABLE `password_resets`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
-
---
--- Índices para tabela `votes`
---
-ALTER TABLE `votes`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
@@ -226,21 +203,15 @@ ALTER TABLE `computelistofuser`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `lastfilefromuser`
+-- AUTO_INCREMENT de tabela `name_images`
 --
-ALTER TABLE `lastfilefromuser`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `name_images`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `votes`
---
-ALTER TABLE `votes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

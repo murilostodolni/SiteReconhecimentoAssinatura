@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+<script language="javascript">
+    function habilitacao(){
+      if(document.getElementById('sim_atuacao').checked == true){
+        document.getElementById('atuacao').disabled = false;
+      } else if(document.getElementById('nao_atuacao').checked == true){
+        document.getElementById('atuacao').disabled = true;
+      }
+}
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -11,7 +21,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nome</label>
+                            <label for="name" class="col-md-4 control-label">Nome Completo</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}">
@@ -25,7 +35,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail</label>
+                            <label for="email" class="col-md-4 control-label">E-mail</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
@@ -39,10 +49,11 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('uf') ? ' has-error' : '' }}">
-                            <label for="uf" class="col-md-4 control-label">Estado (Unidade Federativa onde reside)</label>
+                            <label for="uf" class="col-md-4 control-label">Estado (UF onde reside)</label>
 
                             <div class="col-md-6">
-                                <select id="uf" name="uf">
+                                <select id="uf" name="uf" value="{{ old('uf') }}">
+                                    <option></option>
                                     <option value="AC">AC</option>
                                     <option value="AL">AL</option>
                                     <option value="AP">AP</option>
@@ -81,10 +92,15 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('atuacao') ? ' has-error' : '' }}">
-                            <label for="atuacao" class="col-md-4 control-label">Atua em outro estado diferente de onde resite?</label>
+                            <label for="atuacao" class="col-md-4 control-label">Atua em outro estado diferente do seu?</label>
 
                             <div class="col-md-6">
-                                <input id="atuacao" type="text" class="form-control" name="atuacao" value="{{ old('atuacao') }}">
+                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" checked>
+                                <label for="female">Não</label>&emsp;&emsp;
+                                <input type="radio" id="sim_atuacao" name="atuacao" onClick="habilitacao()">
+                                <label for="male">Sim</label>
+
+                                <input id="atuacao" type="text" disabled placeholder="Ex: PE/PB/AL..." class="form-control" name="atuacao">
 
                                 @if ($errors->has('atuacao'))
                                     <span class="help-block">
@@ -98,7 +114,8 @@
                             <label for="name" class="col-md-4 control-label">Idade</label>
 
                             <div class="col-md-6">
-                                <input id="idade" type="text" class="form-control" name="idade" value="{{ old('idade') }}">
+                                <input id="idade" type="text" class="form-control" placeholder="Ex: 35"
+                                name="idade" value="{{ old('idade') }}">
 
                                 @if ($errors->has('idade'))
                                     <span class="help-block">
@@ -112,7 +129,6 @@
                             <label for="sexo" class="col-md-4 control-label">Sexo</label>
 
                             <div class="col-md-6">
-                                <!--<input id="sexo" type="text" class="form-control" name="sexo" value="{{ old('sexo') }}">-->
                                 <input type="radio" name="sexo" value="f">
                                 <label for="male">Feminino</label>&emsp;&emsp;
                                 <input type="radio" name="sexo" value="m">
@@ -130,11 +146,10 @@
                             <label for="escolaridade" class="col-md-4 control-label">Nível Escolaridade (selecione o maior nível)</label>
 
                             <div class="col-md-6">
-                                <!--<input id="sexo" type="text" class="form-control" name="sexo" value="{{ old('sexo') }}">-->
-                                <input type="radio" name="escolaridade" value="graduacao">
+                                <input type="radio" name="escolaridade" value="graduacao"> 
                                 <label for="male">Graduação</label>&emsp;&emsp;
                                 <input type="radio" name="escolaridade" value="pos_especializacao">
-                                <label for="female">Pós Graducação / Especialização</label><br>
+                                <label for="female">Pós Graducação</label><br>
                                 <input type="radio" name="escolaridade" value="mestrado">
                                 <label for="male">Mestrado</label>&emsp;&emsp;&ensp;
                                 <input type="radio" name="escolaridade" value="doutorado">
@@ -188,7 +203,8 @@
                             <label for="formacao" class="col-md-4 control-label">Qual sua formação acadêmica?</label>
 
                             <div class="col-md-6">
-                                <input id="formacao" type="text" class="form-control" name="formacao" value="{{ old('formacao') }}">
+                                <input id="formacao" type="text" class="form-control" placeholder="Ex: Engenharia da Computação"
+                                name="formacao" value="{{ old('formacao') }}">
 
                                 @if ($errors->has('formacao'))
                                     <span class="help-block">
@@ -225,9 +241,9 @@
                                 <input type="radio" name="tempo" value="1">
                                 <label for="male">Menos de 3 anos</label>&emsp;&emsp;
                                 <input type="radio" name="tempo" value="2">
-                                <label for="female">Acima de 3 anos</label><br>
+                                <label for="female">Entre 4 e 5 anos</label><br>
                                 <input type="radio" name="tempo" value="3">
-                                <label for="female">Acima de 5 anos</label>&emsp;&emsp;
+                                <label for="female">Entre 6 e 10 anos</label>&emsp;&emsp;
                                 <input type="radio" name="tempo" value="4">
                                 <label for="female">Acima de 10 anos</label>
 

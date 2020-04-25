@@ -35,250 +35,102 @@ class HomeController extends Controller
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
 
-        $max_votes = 10;
-        
-        $pic_of_users = ComputeListOfUser::where('user_id', '=', $user_id)->get();
-
-        //caso não tenha mais nenhuma foto para o usuario, vai direto para a pag. final
-        if(count($pic_of_users) == 0 && $qtd_votes == $max_votes){
-            return redirect('final');
-
-        }elseif(count($pic_of_users) == 0 && $qtd_votes == 0){
-
+        /*if: caso nao tenha nenhuma assinatura vinculado ao user e a quant de votos == 0,
+         é preciso vincular as imagens ao usuario, caso contrario vai direto para o final,
+         pois o usuario ja terminou todas as assinaturas ou preferiu nao votas mais*/
+        if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0 && $qtd_votes == 0){
             $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
 
             foreach($images as $k) {
-                ComputeListOfUser::create([
-                    'user_id' => $user_id,
-                    'last_file' => $k->name,
-                    'last_result' => $k->result,
-                ]);
+                ComputeListOfUser::create(['user_id' => $user_id, 'last_file' => $k->name, 'last_result' => $k->result]);
             }
         }
+        /*if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0){
+            if($qtd_votes == 0){
+                $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
+
+                foreach($images as $k) {
+                    ComputeListOfUser::create(['user_id' => $user_id, 'last_file' => $k->name, 'last_result' => $k->result]);
+                }
+            } else {
+                return redirect('final');
+            }
+        }*/
 
         $last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->first();
-
-        //TODO NÃO PRECISA if ($last_file_item){
         $file_test_atual = $last_file_item->last_file;
-        $file_test_atual_dupla = '(1)'.$file_test_atual;
-        $file_test_atual_dupla = 'assets/images/'.$file_test_atual_dupla;
+        $file_test_atual_dupla = 'assets/images/(1)'.$file_test_atual;
         $file_test_atual = 'assets/images/'.$file_test_atual;
         $nome_foto = $last_file_item->last_file;
         $id_foto = $last_file_item->id;
 
-        $exist_info = CheckBoxTable::where('user_id', '=', $user_id)->where('image_name', '=', $nome_foto)->get();
-
-        if(count($exist_info) < 1){
-            //criando tabela com as informacoes do voto do user
-            CheckBoxTable::create([
-                'user_id' => $user_id,
-                'image_name' => $nome_foto,
-                'image_real' => 0,
-                'image_fake' => 0,
-                'result' => 0,
-                'andamentoGrafico' => 0,
-                'conexoes' => 0,
-                'ataques' => 0,
-                'remates' => 0,
-                'posicionamento' => 0,
-                'alinhamento' => 0,
-                'valoresAngulares' => 0,
-                'valoresCurvilineos' => 0,
-                'alografos' => 0,
-                'metodosConstrucao' => 0,
-                'diacriticosPontuacao' => 0,
-                'inclinacao' => 0,
-                'dinamismoEvolucao' => 0,
-                'pressao' => 0,
-                'ritmoGrafico' => 0,
-                'comportamentoPauta' => 0,
-                'comportamentoBase' => 0,
-                'grauHabilidade' => 0,
-                'tendenciaPunho' => 0,
-                'momentoGrafico' => 0,
-                'variabilidade' => 0,
-                'velocidade' => 0,
-                'espacamentos' => 0,
-                'linhasVerbais' => 0,
-                'calibre' => 0,
-                'morfologia' => 0,
-                'natureza' => 0
-            ]);
-        }
+        $tempo_inicio = date('H:i:s');
         
-        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto'));
+        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto', 'tempo_inicio'));
     }
 
-    //TODO ver para tirar
-    public function vote_intermediate(){
-        return redirect('home');
-    }
-
-    //TODO ver para tirar
-    public function newvote(){
-        return redirect('newvote');
-    }
-
-    //TODO ver para tirar
-    /*public function reload(){
+    public function finalizar_votacao()
+    {
         $user_id = auth()->user()->id;
-        User::where('id', $user_id)->update(['reloaded_flag' => 1]);
+        ComputeListOfUser::where('user_id', '=', $user_id)->delete();
 
-        return redirect('home');
-    }*/
+        return view('final');
+    }
+
+    public function welcome()
+    {
+        $user_id = auth()->user()->id;
+        $qtd_votes = auth()->user()->qtd_votes;
+
+        if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0  && $qtd_votes != 0){
+            return view('final');
+        } else {
+            return view('welcome');
+        }
+    }
 
     public function post_checkbox(Request $request){
             
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
-
         $nome_foto = $request->nome_foto;
         $id_foto = $request->id_foto;
-
         $checks = 0;
         $result = 0;
+        $criterios = [27];
+
+        $criterios[0] = $request->conexoes != null ? 1 : 0;
+        $criterios[1] = $request->andamentoGrafico != null ? 1 : 0;
+        $criterios[2] = $request->ataques != null ? 1 : 0;
+        $criterios[3] = $request->remates != null ? 1 : 0;
+        $criterios[4] = $request->posicionamento != null ? 1 : 0;
+        $criterios[5] = $request->alinhamento != null ? 1 : 0;
+        $criterios[6] = $request->valoresAngulares != null ? 1 : 0;
+        $criterios[7] = $request->valoresCurvilineos != null ? 1 : 0;
+        $criterios[8] = $request->alografos != null ? 1 : 0;
+        $criterios[9] = $request->metodosConstrucao != null ? 1 : 0;
+        $criterios[10] = $request->diacriticosPontuacao != null ? 1 : 0;
+        $criterios[11] = $request->inclinacao != null ? 1 : 0;
+        $criterios[12] = $request->dinamismoEvolucao != null ? 1 : 0;
+        $criterios[13] = $request->pressao != null ? 1 : 0;
+        $criterios[14] = $request->ritmoGrafico != null ? 1 : 0;
+        $criterios[15] = $request->comportamentoPauta != null ? 1 : 0;
+        $criterios[16] = $request->comportamentoBase != null ? 1 : 0;
+        $criterios[17] = $request->grauHabilidade != null ? 1 : 0;
+        $criterios[18] = $request->tendenciaPunho != null ? 1 : 0;
+        $criterios[19] = $request->momentoGrafico != null ? 1 : 0;
+        $criterios[20] = $request->variabilidade != null ? 1 : 0;
+        $criterios[21] = $request->velocidade != null ? 1 : 0;
+        $criterios[22] = $request->espacamentos != null ? 1 : 0;
+        $criterios[23] = $request->linhasVerbais != null ? 1 : 0;
+        $criterios[24] = $request->calibre != null ? 1 : 0;
+        $criterios[25] = $request->morfologia != null ? 1 : 0;
+        $criterios[26] = $request->natureza != null ? 1 : 0;
+
+        foreach($criterios as $i){
+            $checks += $i == 1 ? 1 : 0;
+        }
         
-        $conexoes = 1;
-        $andamentoGrafico = 1;
-        $ataques = 1;
-        $remates = 1;
-        $posicionamento = 1;
-        $alinhamento = 1;
-        $valoresAngulares = 1;
-        $valoresCurvilineos = 1;
-        $alografos = 1;
-        $metodosConstrucao = 1;
-        $diacriticosPontuacao = 1;
-        $inclinacao = 1;
-        $dinamismoEvolucao = 1;
-        $pressao = 1;
-        $ritmoGrafico = 1;
-        $comportamentoPauta = 1;
-        $comportamentoBase = 1;
-        $grauHabilidade = 1;
-        $tendenciaPunho = 1;
-        $momentoGrafico = 1;
-        $variabilidade = 1;
-        $velocidade = 1;
-        $espacamentos = 1;
-        $linhasVerbais = 1;
-        $calibre = 1;
-        $morfologia = 1;
-        $natureza = 1;
-                
-
-        if ($request->conexoes == null){
-            $conexoes = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->andamentoGrafico == null){
-            $andamentoGrafico = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->ataques == null){
-            $ataques = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->remates == null){
-            $remates = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->posicionamento == null){
-            $posicionamento = 0;
-            $checks = $checks + 1;
-        }
-
-        if ($request->alinhamento == null){
-            $alinhamento = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->valoresAngulares == null){
-            $valoresAngulares = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->valoresCurvilineos == null){
-            $valoresCurvilineos = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->alografos == null){
-            $alografos = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->metodosConstrucao == null){
-            $metodosConstrucao = 0;
-            $checks = $checks + 1;
-        }
-
-        if ($request->diacriticosPontuacao == null){
-            $diacriticosPontuacao = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->inclinacao == null){
-            $inclinacao = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->dinamismoEvolucao == null){
-            $dinamismoEvolucao = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->pressao == null){
-            $pressao = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->ritmoGrafico == null){
-            $ritmoGrafico = 0;
-            $checks = $checks + 1;
-        }
-
-        if ($request->comportamentoPauta == null){
-            $comportamentoPauta = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->comportamentoBase == null){
-            $comportamentoBase = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->grauHabilidade == null){
-            $grauHabilidade = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->tendenciaPunho == null){
-            $tendenciaPunho = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->momentoGrafico == null){
-            $momentoGrafico = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->variabilidade == null){
-            $variabilidade = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->velocidade == null){
-            $velocidade = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->espacamentos == null){
-            $espacamentos = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->linhasVerbais == null){
-            $linhasVerbais = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->calibre == null){
-            $calibre = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->morfologia == null){
-            $morfologia = 0;
-            $checks = $checks + 1;
-        }
-        if ($request->natureza == null){
-            $natureza = 0;
-            $checks = $checks + 1;
-        }
-
         $image_real = 1;
         $image_fake = 1;
 
@@ -309,11 +161,15 @@ class HomeController extends Controller
             User::where('id', $user_id)->update(['qtd_erros' => $qtd_erros]);
         }
         
+        //atualizando numero de votos do usuario
+        $votes_update = $qtd_votes + 1;
+        User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
+        
         //se não tiver a variavel mensagem dá erro.....
         //if: caso o usuario não tenha escolhido 5 criterios
         //elseif: caso o usuario não tenha selecionado sim ou não
         $mensagem = '';
-        if($checks > 22){
+        if($checks < 5){
             $mensagem = "Selecione 5 ou mais caracteristicas, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }elseif ($image_fake == 1 && $image_real == 1){
@@ -326,66 +182,48 @@ class HomeController extends Controller
         $quant_votes = $quant_votes - 1;
         NameImages::where('name', '=', $nome_foto)->update(['quant_votes' => $quant_votes]);
 
-        //procurando o id do checkbox para fazer o update das informacoes
-        $info = CheckBoxTable::where('user_id', '=', $user_id)->get();
-        foreach ($info as $i)
-        {
-            if($i->image_name == $nome_foto){
-                $id_check_box = $i->id;
-                break;
-            }
-        }
+        //calculando tempo do voto (apenas os minutos)
+        $tempo_voto = gmdate('i', abs(strtotime(date('H:i:s')) - strtotime($request->tempo_inicio)));
 
-        //TODO PODERIA TIRAR OS IFS, POREM IRIA FICAR NULL PARA NÃO MARCADO OU 1 PARA MARCADO, FAÇO???
-        CheckBoxTable::where('id', $id_check_box)->update([
+        //procurando o id do checkbox para fazer o update das informacoes
+        CheckBoxTable::create([
+            'user_id' => $user_id,
+            'image_name' => $nome_foto,
             'image_real' => $image_real,
             'image_fake' => $image_fake,
             'result' => $result,
-            'andamentoGrafico' => $andamentoGrafico,
-            'conexoes' => $conexoes,
-            'ataques' => $ataques,
-            'remates' => $remates,
-            'posicionamento' => $posicionamento,
-            'alinhamento' => $alinhamento,
-            'valoresAngulares' => $valoresAngulares,
-            'valoresCurvilineos' => $valoresCurvilineos,
-            'alografos' => $alografos,
-            'metodosConstrucao' => $metodosConstrucao,
-            'diacriticosPontuacao' => $diacriticosPontuacao,
-            'inclinacao' => $inclinacao,
-            'dinamismoEvolucao' => $dinamismoEvolucao,
-            'pressao' => $pressao,
-            'ritmoGrafico' => $ritmoGrafico,
-            'comportamentoPauta' => $comportamentoPauta,
-            'comportamentoBase' => $comportamentoBase,
-            'grauHabilidade' => $grauHabilidade,
-            'tendenciaPunho' => $tendenciaPunho,
-            'momentoGrafico' => $momentoGrafico,
-            'variabilidade' => $variabilidade,
-            'velocidade' => $velocidade,
-            'espacamentos' => $espacamentos,
-            'linhasVerbais' => $linhasVerbais,
-            'calibre' => $calibre,
-            'morfologia' => $morfologia,
-            'natureza' => $natureza
+            'tempo_voto' => $tempo_voto,
+            'conexoes' => $criterios[0],
+            'andamentoGrafico' => $criterios[1],
+            'ataques' => $criterios[2],
+            'remates' => $criterios[3],
+            'posicionamento' => $criterios[4],
+            'alinhamento' => $criterios[5],
+            'valoresAngulares' => $criterios[6],
+            'valoresCurvilineos' => $criterios[7],
+            'alografos' => $criterios[8],
+            'metodosConstrucao' => $criterios[9],
+            'diacriticosPontuacao' => $criterios[10],
+            'inclinacao' => $criterios[11],
+            'dinamismoEvolucao' => $criterios[12],
+            'pressao' => $criterios[13],
+            'ritmoGrafico' => $criterios[14],
+            'comportamentoPauta' => $criterios[15],
+            'comportamentoBase' => $criterios[16],
+            'grauHabilidade' => $criterios[17],
+            'tendenciaPunho' => $criterios[18],
+            'momentoGrafico' => $criterios[19],
+            'variabilidade' => $criterios[20],
+            'velocidade' => $criterios[21],
+            'espacamentos' => $criterios[22],
+            'linhasVerbais' => $criterios[23],
+            'calibre' => $criterios[24],
+            'morfologia' => $criterios[25],
+            'natureza' => $criterios[26]
         ]);
 
-        $picture = ComputeListOfUser::find($id_foto);
-        $picture->delete();
-
-        $votes_update = $qtd_votes + 1;
-        User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
-
-        //TODO fazer operacao com o tempo!
-        /*$time = CheckBoxTable::where('id', $id_check_box)->get();
-        $time_created = $time->created_at;
-        $time_finished = $time->updated_at;
-
-        $time_total = strtotime($time_finished) - strtotime($time_created);
-        $dte = new datetime(date('H:i:s'));
-        $dte = $time_total;
-        print "Total " . $dte . "<br>";*/
-
+        //deletando imagem vinculada ao user
+        ComputeListOfUser::where('id', '=', $id_foto)->delete();
 
         if($votes_update < 10){
             return redirect('newvote');
@@ -394,4 +232,3 @@ class HomeController extends Controller
         }
     }
 }
-?>
