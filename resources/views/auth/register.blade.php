@@ -95,7 +95,7 @@
                             <label for="atuacao" class="col-md-4 control-label">Atua em outro estado diferente do seu?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" checked>
+                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" checked value="nao">
                                 <label for="female">Não</label>&emsp;&emsp;
                                 <input type="radio" id="sim_atuacao" name="atuacao" onClick="habilitacao()">
                                 <label for="male">Sim</label>
@@ -148,8 +148,8 @@
                             <div class="col-md-6">
                                 <input type="radio" name="escolaridade" value="graduacao"> 
                                 <label for="male">Graduação</label>&emsp;&emsp;
-                                <input type="radio" name="escolaridade" value="pos_especializacao">
-                                <label for="female">Pós Graducação</label><br>
+                                <input type="radio" name="escolaridade" value="especializacao">
+                                <label for="female">Especialização</label><br>
                                 <input type="radio" name="escolaridade" value="mestrado">
                                 <label for="male">Mestrado</label>&emsp;&emsp;&ensp;
                                 <input type="radio" name="escolaridade" value="doutorado">
@@ -222,7 +222,7 @@
                                 <label for="male">Perícia Grafotécnica</label><br>
                                 <input type="radio" name="area" value="documentoscopia">
                                 <label for="female">Documentoscopia</label><br>
-                                <input type="radio" name="area" value="ambos">
+                                <input type="radio" name="area" value="ambas">
                                 <label for="female">Ambas as áreas de atuação</label><br>
 
                                 @if ($errors->has('area'))

@@ -35,9 +35,8 @@ class HomeController extends Controller
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
 
-        /*if: caso nao tenha nenhuma assinatura vinculado ao user e a quant de votos == 0,
-         é preciso vincular as imagens ao usuario, caso contrario vai direto para o final,
-         pois o usuario ja terminou todas as assinaturas ou preferiu nao votas mais*/
+        /*if: caso nao tenha nenhuma assinatura vinculado ao user e a quant de votos == 0, é preciso vincular as imagens
+        ao usuario, caso contrario vai direto para o final, pois o usuario ja terminou todas as assinaturas ou preferiu nao votas mais*/
         if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0 && $qtd_votes == 0){
             $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
 
@@ -45,17 +44,6 @@ class HomeController extends Controller
                 ComputeListOfUser::create(['user_id' => $user_id, 'last_file' => $k->name, 'last_result' => $k->result]);
             }
         }
-        /*if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0){
-            if($qtd_votes == 0){
-                $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
-
-                foreach($images as $k) {
-                    ComputeListOfUser::create(['user_id' => $user_id, 'last_file' => $k->name, 'last_result' => $k->result]);
-                }
-            } else {
-                return redirect('final');
-            }
-        }*/
 
         $last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->first();
         $file_test_atual = $last_file_item->last_file;
@@ -63,19 +51,19 @@ class HomeController extends Controller
         $file_test_atual = 'assets/images/'.$file_test_atual;
         $nome_foto = $last_file_item->last_file;
         $id_foto = $last_file_item->id;
-
         $tempo_inicio = date('H:i:s');
         
         return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto', 'tempo_inicio'));
     }
 
+    /* FUNCAO DESATIVADA POR ENQUANTO
     public function finalizar_votacao()
     {
         $user_id = auth()->user()->id;
         ComputeListOfUser::where('user_id', '=', $user_id)->delete();
 
         return view('final');
-    }
+    }*/
 
     public function welcome()
     {
@@ -95,8 +83,6 @@ class HomeController extends Controller
         $qtd_votes = auth()->user()->qtd_votes;
         $nome_foto = $request->nome_foto;
         $id_foto = $request->id_foto;
-        $checks = 0;
-        $result = 0;
         $criterios = [27];
 
         $criterios[0] = $request->conexoes != null ? 1 : 0;
@@ -127,13 +113,13 @@ class HomeController extends Controller
         $criterios[25] = $request->morfologia != null ? 1 : 0;
         $criterios[26] = $request->natureza != null ? 1 : 0;
 
+        $checks = 0;
         foreach($criterios as $i){
             $checks += $i == 1 ? 1 : 0;
         }
         
         $image_real = 1;
         $image_fake = 1;
-
         $info_image = $request->info_image;
 
         if ($info_image == 'image_real'){
@@ -143,6 +129,7 @@ class HomeController extends Controller
         }
 
         //colocando se o user acertou ou errou o voto
+        $result = 0;
         $result_db = ComputeListOfUser::where('id', '=', $id_foto)->value('last_result');
         if(($result_db == 1 && $image_real == 1) || ($result_db == 0 && $image_fake == 1)){
             $result = 1;
@@ -170,10 +157,10 @@ class HomeController extends Controller
         //elseif: caso o usuario não tenha selecionado sim ou não
         $mensagem = '';
         if($checks < 5){
-            $mensagem = "Selecione 5 ou mais caracteristicas, obrigado!";
+            $mensagem = "Selecione 5 ou mais criterios, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }elseif ($image_fake == 1 && $image_real == 1){
-            $mensagem = "Selecione uma opcao no resultado final, obrigado!";
+            $mensagem = "Selecione Sim ou Nao para o campo: assinatura de mesmo punho?, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }
 
@@ -183,7 +170,10 @@ class HomeController extends Controller
         NameImages::where('name', '=', $nome_foto)->update(['quant_votes' => $quant_votes]);
 
         //calculando tempo do voto (apenas os minutos)
-        $tempo_voto = gmdate('i', abs(strtotime(date('H:i:s')) - strtotime($request->tempo_inicio)));
+        // > 0,5 arredonda pra 1 e se for < 0,5 arredonda para 0
+        $tempo_voto = strtotime(date('H:i:s')) - strtotime($request->tempo_inicio);
+        $tempo_voto = $tempo_voto/60;
+        $tempo_total = round($tempo_voto, 0);
 
         //procurando o id do checkbox para fazer o update das informacoes
         CheckBoxTable::create([
@@ -192,7 +182,7 @@ class HomeController extends Controller
             'image_real' => $image_real,
             'image_fake' => $image_fake,
             'result' => $result,
-            'tempo_voto' => $tempo_voto,
+            'tempo_voto' => $tempo_total,
             'conexoes' => $criterios[0],
             'andamentoGrafico' => $criterios[1],
             'ataques' => $criterios[2],
@@ -228,7 +218,7 @@ class HomeController extends Controller
         if($votes_update < 10){
             return redirect('newvote');
         }else{
-            return redirect('home');
+            return redirect('final');
         }
     }
 }

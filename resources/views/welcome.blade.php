@@ -37,7 +37,7 @@
                         <br><br>
                         <input type="checkbox" id="concordo" value="concordo" onClick="check()">
                         <label for="male">Concordo com os termos</label><br><br>
-                        <i>Os critérios de avaliação para realização das análises grafotécnicas nessa pesquisas são
+                        <i>Os critérios de avaliação para realização das análises grafotécnicas nessa pesquisa são
                         baseados nas literaturas de:<br>
                         [FALAT, 2012]<br>
                         [SILVA E FEUERHARMEL, 2013]<br>

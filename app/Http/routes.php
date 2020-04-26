@@ -27,7 +27,7 @@ Route::auth();
 
 Route::post('/post_checkbox', 'HomeController@post_checkbox');
 Route::get('/get_vote/{nomeFoto}/{vote}/{idFoto}', 'HomeController@get_vote');
-Route::get('/finalizar_votacao', 'HomeController@finalizar_votacao');
+//Route::get('/finalizar_votacao', 'HomeController@finalizar_votacao'); FUNCAO DESATIVADA
 Route::get('/', 'HomeController@welcome');
 Route::get('/home', 'HomeController@index');
 Route::get('/reload', 'HomeController@reload');
