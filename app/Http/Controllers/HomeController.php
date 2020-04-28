@@ -65,7 +65,7 @@ class HomeController extends Controller
         return view('final');
     }*/
 
-    public function welcome()
+    public function informacao()
     {
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
@@ -73,7 +73,7 @@ class HomeController extends Controller
         if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0  && $qtd_votes != 0){
             return view('final');
         } else {
-            return view('welcome');
+            return view('informacao');
         }
     }
 

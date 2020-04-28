@@ -39,7 +39,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('informacao') }}">
                     <p><img src="assets/images/logo.png" width = 16%/> Pesquisa | Pós-Graduação</p>
                 </a>
             </div>

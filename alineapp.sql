@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 25-Abr-2020 às 18:59
+-- Tempo de geração: 28-Abr-2020 às 07:28
 -- Versão do servidor: 10.4.8-MariaDB
 -- versão do PHP: 7.3.11
 
@@ -35,7 +35,7 @@ CREATE TABLE `checkbox` (
   `image_real` int(11) NOT NULL,
   `image_fake` int(11) NOT NULL,
   `result` int(2) NOT NULL,
-  `tempo_voto` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tempo_voto` int(11) NOT NULL,
   `andamentoGrafico` int(11) NOT NULL,
   `conexoes` int(11) NOT NULL,
   `ataques` int(11) NOT NULL,

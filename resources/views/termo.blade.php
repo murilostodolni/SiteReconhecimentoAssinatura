@@ -8,7 +8,7 @@
                 <div class="panel-heading">TERMOS DE CONSENTIMENTO E CONFIDENCIALIDADE</div>
 
                 <div class="panel-body">
-                <button><a href="{{url('/')}}">Voltar</a></button>
+                <button><a href="{{url('informacao')}}">Voltar</a></button>
                 <br><br>
                 TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO<br>
                 (Elaborado de acordo com a Resolução 466/2012-CNS/CONEP)
@@ -62,7 +62,7 @@
                 TERMO DE CONFIDENCIALIDADE: 
                 Eu, Ana Patrícia Carvalho de melo, pesquisador responsável da pesquisa IDENTIFICAÇÃO DOS PRINCIPAIS CRITÉRIOS ANALISADOS EM ASSINATURAS E RUBRICAS NA PERÍCIA GRAFOTÉCNICA E MINHA EQUIPA DE PESQUISA, Profª. Karina Paes Advíncula, estabelecemos o compromisso com a confidencialidade dos dados coletados dos participantes, poupando a amostra de qualquer exposição. O acesso a esses dados ou em outra base de dados será utilizado somente para a pesquisa ao qual está vinculado.
                 <br><br>
-                <button><a href="{{url('/')}}">Voltar</a></button>
+                <button><a href="{{url('informacao')}}">Voltar</a></button>
                 </div>
             </div>
         </div>

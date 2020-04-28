@@ -27,8 +27,8 @@
                 <div class="panel-heading">Bem vindo!</div>
 
                 <div class="panel-body">
-                        Essa pesquisa tem como objetivo o estudo das tecnicas de grafostécnica para os programas de 
-                        pós-graduação em Perícia Forence e Engenharia da Computação da Uniservidade de Pernambuco.
+                        Essa pesquisa tem como objetivo o estudo das tecnicas de grafotécnica para os programas de 
+                        pós-graduação em Perícia Forense e Engenharia da Computação da Universidade de Pernambuco.
                         <br><br>
                         <strong>OBS:</strong> As analises não precisam ser feitas todas de uma vez,
                         você pode sair e entrar novamente com o mesmo login e senha quantas vezes forem necessário.

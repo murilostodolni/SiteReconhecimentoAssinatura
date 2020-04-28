@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function () {
+    return view('inicio');
+});
+
 Route::get('newvote', function () {
     return view('newvote');
 });
@@ -28,6 +32,6 @@ Route::auth();
 Route::post('/post_checkbox', 'HomeController@post_checkbox');
 Route::get('/get_vote/{nomeFoto}/{vote}/{idFoto}', 'HomeController@get_vote');
 //Route::get('/finalizar_votacao', 'HomeController@finalizar_votacao'); FUNCAO DESATIVADA
-Route::get('/', 'HomeController@welcome');
+Route::get('/informacao', 'HomeController@informacao');
 Route::get('/home', 'HomeController@index');
 Route::get('/reload', 'HomeController@reload');
