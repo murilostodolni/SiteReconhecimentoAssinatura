@@ -136,7 +136,7 @@
                         <div class="img-container">
                           <figure>
                             <figcaption><h4>Assinatura 1:</h4></figcaption>
-                            <img src="{{$file_test_atual}}"/>
+                            <img src="{{$assinatura_um}}"/>
                           </figure>
                         </div>
                         </tr>
@@ -144,8 +144,7 @@
                         <div class="img-container">
                           <figure>
                             <figcaption><h4>Assinatura 2:</h4></figcaption>
-                            <img src="{{$file_test_atual_dupla}}"/>
-                            
+                            <img src="{{$assinatura_dois}}"/>
                           </figure>
                         </div>  
                         </tr>
@@ -157,11 +156,11 @@
                             <h3>A assinatura foi feita pelo mesmo punho escritor?</h3>
                             <div class="funkyradio">
                                 <div class="funkyradio-success">
-                                  <input type="radio" name="info_image" value="image_real" id="radio3" />
+                                  <input type="radio" name="mesmo_punho" value="1" id="radio3" />
                                   <label for="radio3">Sim</label>
                                 </div>
                                 <div class="funkyradio-danger">
-                                    <input type="radio" name="info_image" value="image_fake" id="radio4" />
+                                    <input type="radio" name="mesmo_punho" value="0" id="radio4" />
                                     <label for="radio4">Não</label>
                                 </div>
                             </div>
@@ -175,11 +174,11 @@
                                   <div class="funkyradio">
                                     <div class="funkyradio-primary">
                                         <input type="checkbox" name="conexoes" id="checkbox1">
-                                        <label for="checkbox1">Conexoes</label>
+                                        <label for="checkbox1">Conexões</label>
                                     </div>
                                     <div class="funkyradio-primary">
                                         <input type="checkbox" name="andamentoGrafico" id="checkbox2">
-                                        <label for="checkbox2">Andamento Grafico</label>
+                                        <label for="checkbox2">Andamento Gráfico</label>
                                     </div>
                                     <div class="funkyradio-primary">
                                         <input type="checkbox" name="ataques" id="checkbox3">

@@ -40,20 +40,26 @@ class HomeController extends Controller
         if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0 && $qtd_votes == 0){
             $images = NameImages::orderBy('quant_votes','asc')->where('quant_votes', '>', 0)->take(10)->get();
 
+            //caso todas as assinaturas ja foram votadas, ou seja, todas as estao com zero na quant_votes
+            //leva o user a pagina de pesquisa encerrada!
+            if(count($images) == 0){
+                return redirect('pesquisa-finalizada');
+            }
+
             foreach($images as $k) {
-                ComputeListOfUser::create(['user_id' => $user_id, 'last_file' => $k->name, 'last_result' => $k->result]);
+                ComputeListOfUser::create(['user_id' => $user_id, 'image_name' => $k->name, 'result_image' => $k->result]);
             }
         }
 
-        $last_file_item = ComputeListOfUser::where('user_id', '=', $user_id)->first();
-        $file_test_atual = $last_file_item->last_file;
-        $file_test_atual_dupla = 'assets/images/(1)'.$file_test_atual;
-        $file_test_atual = 'assets/images/'.$file_test_atual;
-        $nome_foto = $last_file_item->last_file;
-        $id_foto = $last_file_item->id;
+        $image = ComputeListOfUser::where('user_id', '=', $user_id)->first();
+        $assinatura_um = $image->image_name;
+        $assinatura_dois = 'assets/images/(1)'.$assinatura_um;
+        $assinatura_um = 'assets/images/'.$assinatura_um;
+        $nome_foto = $image->image_name;
+        $id_foto = $image->id;
         $tempo_inicio = date('H:i:s');
         
-        return view('home', compact('file_test_atual', 'file_test_atual_dupla','nome_foto','id_foto', 'tempo_inicio'));
+        return view('home', compact('assinatura_um', 'assinatura_dois','nome_foto','id_foto', 'tempo_inicio'));
     }
 
     /* FUNCAO DESATIVADA POR ENQUANTO
@@ -70,11 +76,18 @@ class HomeController extends Controller
         $user_id = auth()->user()->id;
         $qtd_votes = auth()->user()->qtd_votes;
 
-        if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0  && $qtd_votes != 0){
+        if(count(ComputeListOfUser::where('user_id', '=', $user_id)->get()) == 0  && $qtd_votes == 10){
             return view('final');
         } else {
             return view('informacao');
         }
+    }
+
+    public function novo_voto()
+    {
+        $qtd_votes = auth()->user()->qtd_votes;
+
+        return view('newvote', compact('qtd_votes'));
     }
 
     public function post_checkbox(Request $request){
@@ -84,6 +97,7 @@ class HomeController extends Controller
         $nome_foto = $request->nome_foto;
         $id_foto = $request->id_foto;
         $criterios = [27];
+        $mesmo_punho = $request->mesmo_punho;
 
         $criterios[0] = $request->conexoes != null ? 1 : 0;
         $criterios[1] = $request->andamentoGrafico != null ? 1 : 0;
@@ -118,7 +132,7 @@ class HomeController extends Controller
             $checks += $i == 1 ? 1 : 0;
         }
         
-        $image_real = 1;
+        /*$image_real = 1;
         $image_fake = 1;
         $info_image = $request->info_image;
 
@@ -126,12 +140,12 @@ class HomeController extends Controller
             $image_fake = 0;
         } elseif ($info_image == 'image_fake'){
             $image_real = 0;
-        }
+        }*/
 
         //colocando se o user acertou ou errou o voto
         $result = 0;
-        $result_db = ComputeListOfUser::where('id', '=', $id_foto)->value('last_result');
-        if(($result_db == 1 && $image_real == 1) || ($result_db == 0 && $image_fake == 1)){
+        $result_db = ComputeListOfUser::where('id', '=', $id_foto)->value('result_image');
+        if(($result_db == 1 && $mesmo_punho == 1) || ($result_db == 0 && $mesmo_punho == 0)){
             $result = 1;
         }
 
@@ -153,14 +167,14 @@ class HomeController extends Controller
         User::where('id', $user_id)->update(['qtd_votes' => $votes_update]);
         
         //se não tiver a variavel mensagem dá erro.....
-        //if: caso o usuario não tenha escolhido 5 criterios
-        //elseif: caso o usuario não tenha selecionado sim ou não
+        //if: caso o usuario não tenha selecionado sim ou não
+        //elseif: caso o usuario não tenha escolhido 5 criterios
         $mensagem = '';
-        if($checks < 5){
-            $mensagem = "Selecione 5 ou mais criterios, obrigado!";
-            return view('view_intermediaria', compact('mensagem'));
-        }elseif ($image_fake == 1 && $image_real == 1){
+        if ($mesmo_punho == null){
             $mensagem = "Selecione Sim ou Nao para o campo: assinatura de mesmo punho?, obrigado!";
+            return view('view_intermediaria', compact('mensagem'));
+        }elseif($checks < 5){
+            $mensagem = "Selecione 5 ou mais criterios, obrigado!";
             return view('view_intermediaria', compact('mensagem'));
         }
 
@@ -179,8 +193,9 @@ class HomeController extends Controller
         CheckBoxTable::create([
             'user_id' => $user_id,
             'image_name' => $nome_foto,
-            'image_real' => $image_real,
-            'image_fake' => $image_fake,
+            'mesmo_punho' => $mesmo_punho,
+            //'image_real' => $image_real,
+            //'image_fake' => $image_fake,
             'result' => $result,
             'tempo_voto' => $tempo_total,
             'conexoes' => $criterios[0],
@@ -216,6 +231,8 @@ class HomeController extends Controller
         ComputeListOfUser::where('id', '=', $id_foto)->delete();
 
         if($votes_update < 10){
+            //return redirect()->route('newvote', [$votes_update]);
+            //return redirect('newvote');
             return redirect('newvote');
         }else{
             return redirect('final');

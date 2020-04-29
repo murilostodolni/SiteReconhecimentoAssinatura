@@ -8,7 +8,7 @@ class CheckBoxTable extends Model
 {
     
 
-    protected $fillable =  ['user_id', 'image_name', 'image_real', 'image_fake', 'result', 'tempo_voto','andamentoGrafico','conexoes',
+    protected $fillable =  ['user_id', 'image_name', 'mesmo_punho', 'result', 'tempo_voto','andamentoGrafico','conexoes',
     'ataques', 'remates', 'posicionamento', 'alinhamento', 'valoresAngulares',
     'valoresCurvilineos', 'alografos', 'metodosConstrucao', 'diacriticosPontuacao',
     'inclinacao', 'dinamismoEvolucao', 'pressao', 'ritmoGrafico', 'comportamentoPauta',

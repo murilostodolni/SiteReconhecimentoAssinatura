@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28-Abr-2020 às 07:28
+-- Tempo de geração: 29-Abr-2020 às 04:43
 -- Versão do servidor: 10.4.8-MariaDB
 -- versão do PHP: 7.3.11
 
@@ -32,9 +32,8 @@ CREATE TABLE `checkbox` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
   `image_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `image_real` int(11) NOT NULL,
-  `image_fake` int(11) NOT NULL,
-  `result` int(2) NOT NULL,
+  `mesmo_punho` int(11) NOT NULL,
+  `result` int(11) NOT NULL,
   `tempo_voto` int(11) NOT NULL,
   `andamentoGrafico` int(11) NOT NULL,
   `conexoes` int(11) NOT NULL,
@@ -76,8 +75,8 @@ CREATE TABLE `checkbox` (
 CREATE TABLE `computelistofuser` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
-  `last_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `last_result` int(2) NOT NULL,
+  `image_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `result_image` int(2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -135,17 +134,17 @@ CREATE TABLE `users` (
   `qtd_acertos` int(11) NOT NULL,
   `qtd_erros` int(11) NOT NULL,
   `uf` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idade` int(2) NOT NULL,
+  `idade` int(11) NOT NULL,
   `atuacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `sexo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `escolaridade` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `disciplina` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `abordagem` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `escolaridade` int(11) NOT NULL,
+  `disciplina` int(11) NOT NULL,
+  `abordagem` int(11) NOT NULL,
   `formacao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `area` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `tempo` int(2) NOT NULL,
-  `setor` int(2) NOT NULL,
-  `experiencia` int(2) NOT NULL,
+  `area` int(11) NOT NULL,
+  `tempo` int(11) NOT NULL,
+  `setor` int(11) NOT NULL,
+  `experiencia` int(11) NOT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL

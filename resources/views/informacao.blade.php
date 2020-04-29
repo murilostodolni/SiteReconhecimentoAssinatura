@@ -24,19 +24,22 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Bem vindo!</div>
+                <div class="panel-heading">Informações Importantes</div>
 
                 <div class="panel-body">
-                        Essa pesquisa tem como objetivo o estudo das tecnicas de grafotécnica para os programas de 
-                        pós-graduação em Perícia Forense e Engenharia da Computação da Universidade de Pernambuco.
+                        Essa pesquisa tem como objetivo o estudo dos critérios e procedimentos utilizados pela
+                        grafotécnica. Estão envolvidos nessa pesquisa estudantes e pesquisadores dos programas
+                        de pós-graduação em Perícia Forense e Engenharia da Computação da Universidade de Pernambuco.
                         <br><br>
-                        <strong>OBS:</strong> As analises não precisam ser feitas todas de uma vez,
-                        você pode sair e entrar novamente com o mesmo login e senha quantas vezes forem necessário.
+                        <strong>OBS:</strong> As análises não precisam ser feitas todas de uma vez,
+                        você pode sair e entrar novamente com o mesmo login e senha cadastrados
+                        quantas vezes forem necessário.
                         <br><br>
-                        <button><a href="{{url('/termo')}}">Termos de consentimento e confidencialidade</a></button>
+                        <button><a href="{{url('/termo')}}">Termos de Consentimento e Confidencialidade</a></button>
                         <br><br>
                         <input type="checkbox" id="concordo" value="concordo" onClick="check()">
-                        <label for="male">Concordo com os termos</label><br><br>
+                        <label for="male">Concordo com os termos</label>
+                        <br><br>
                         <i>Os critérios de avaliação para realização das análises grafotécnicas nessa pesquisa são
                         baseados nas literaturas de:<br>
                         [FALAT, 2012]<br>
