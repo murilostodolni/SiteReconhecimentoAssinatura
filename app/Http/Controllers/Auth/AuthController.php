@@ -56,8 +56,8 @@ class AuthController extends Controller
             'email' => 'required|email|max:50|unique:users',
             'password' => 'required|min:6|confirmed',
             'uf' => 'required',
-            'atuacao' => 'required|max:30',
-            'idade' => 'required|numeric',
+            'atuacao' => 'required|max:30|regex:/[A-Z][A-Z]((\/[A-Z][A-Z]))*$/',
+            'idade' => 'numeric|required|between:1,99',
             'sexo' => 'required',
             'escolaridade' => 'required',
             'disciplina' => 'required',
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'area' => 'required',
             'tempo' => 'required',
             'setor' => 'required',
-            'experiencia' => 'required',
+            'experiencia' => 'required'            
         ]);
     }
 
@@ -96,7 +96,6 @@ class AuthController extends Controller
 
         //aviso sobre violacao de senha parou depois disso...
         $password = bcrypt($data['password']);
-        //$password = $data['password'];
 
         return User::create([
             'name' => $data['name'],

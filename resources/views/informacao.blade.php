@@ -9,7 +9,7 @@
         if(document.getElementById('concordo').checked == true){
             window.location.href = "{{url('/home')}}";
         } else {
-            document.getElementById('click').innerHTML = "Aceite os termos para poder iniciar analise!";
+            document.getElementById('click').innerHTML = "Aceite os termos para iniciar análise.";
         }
     }
     function check(){
@@ -35,18 +35,23 @@
                         você pode sair e entrar novamente com o mesmo login e senha cadastrados
                         quantas vezes forem necessário.
                         <br><br>
-                        <button><a href="{{url('/termo')}}">Termos de Consentimento e Confidencialidade</a></button>
+                        <a class="btn btn-warning" href="{{url('/termo')}}" role="button">
+                        <i class="glyphicon glyphicon-info-sign"></i>&ensp;Termos de Consentimento e Confidencialidade</a>
+                       
                         <br><br>
-                        <input type="checkbox" id="concordo" value="concordo" onClick="check()">
-                        <label for="male">Concordo com os termos</label>
-                        <br><br>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="concordo" onClick="check()">
+                            <label class="form-check-label" for="concordo">Concordo com os termos</label>
+                        </div>
+                        <br>
                         <i>Os critérios de avaliação para realização das análises grafotécnicas nessa pesquisa são
                         baseados nas literaturas de:<br>
                         [FALAT, 2012]<br>
                         [SILVA E FEUERHARMEL, 2013]<br>
                         [MENDES, 2015]</i>
                         <br><br>
-                        <button type="button" id='botao' onClick="habilitacao()">Clique para iniciar</button>
+                        <a class="btn btn-primary" role="button" id='botao' onClick="habilitacao()">
+                        <i class="glyphicon glyphicon-share-alt"></i>&ensp;Iniciar Análises</a>
                         <strong><div id="click" style="color:red"></div></strong>
                 </div>
             </div>

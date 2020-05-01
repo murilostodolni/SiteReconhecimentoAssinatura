@@ -1,4 +1,3 @@
-
 <script LANGUAGE='JavaScript'>
     //exibe mensagem
     alert('{{$mensagem}}');

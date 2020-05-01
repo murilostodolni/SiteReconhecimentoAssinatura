@@ -8,7 +8,8 @@
                 <div class="panel-heading">TERMOS DE CONSENTIMENTO E CONFIDENCIALIDADE</div>
 
                 <div class="panel-body">
-                <button><a href="{{url('informacao')}}">Voltar</a></button>
+                    <a class="btn btn-primary" href="{{url('informacao')}}" role="button">
+                    <i class="fa fa-arrow-left"></i>&ensp;Voltar</a>
                 <br><br>
                 TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO<br>
                 (Elaborado de acordo com a Resolução 466/2012-CNS/CONEP)
@@ -32,7 +33,7 @@
                 critérios adotados por peritos grafotécnicos para análise de rubricas e assinaturas. Com finalidade de
                 contribuir com o conhecimento de profissionais na área de perícias forenses.
                 Caso você deseje participar desta pesquisa, os seguintes procedimentos deverão ser realizados:
-                preenchimento de questionário.
+                preenchimento dos campos na página de cadastro e na página de análise de assinaturas.
                 Caso não deseje participar, não haverá nenhum prejuízo para você.
                 Esclarecemos que manteremos em anonimato, sob sigilo absoluto, durante e após o término do estudo, todos
                 os dados que identifiquem o participante da pesquisa usando apenas, para divulgação, os dados inerentes
@@ -62,7 +63,8 @@
                 TERMO DE CONFIDENCIALIDADE: 
                 Eu, Ana Patrícia Carvalho de melo, pesquisador responsável da pesquisa IDENTIFICAÇÃO DOS PRINCIPAIS CRITÉRIOS ANALISADOS EM ASSINATURAS E RUBRICAS NA PERÍCIA GRAFOTÉCNICA E MINHA EQUIPA DE PESQUISA, Profª. Karina Paes Advíncula, estabelecemos o compromisso com a confidencialidade dos dados coletados dos participantes, poupando a amostra de qualquer exposição. O acesso a esses dados ou em outra base de dados será utilizado somente para a pesquisa ao qual está vinculado.
                 <br><br>
-                <button><a href="{{url('informacao')}}">Voltar</a></button>
+                    <a class="btn btn-primary" href="{{url('informacao')}}" role="button">
+                    <i class="fa fa-arrow-left"></i>&ensp;Voltar</a>
                 </div>
             </div>
         </div>

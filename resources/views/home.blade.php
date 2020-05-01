@@ -313,7 +313,7 @@
                               <input type="hidden" name="id_foto" value="{{$id_foto}}">
                               <input type="hidden" name="tempo_inicio" value="{{$tempo_inicio}}">
                               <br>
-                              <button>Enviar Resposta</button>
+                              <button class="btn btn-success btn-lg btn-block"><i class="glyphicon glyphicon-ok"></i>&ensp;Enviar Resposta</button>
                           </form>
             </div>
         </div>

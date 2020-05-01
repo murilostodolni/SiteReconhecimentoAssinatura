@@ -1,14 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<script language="javascript">
+<script LANGUAGE='JavaScript'>
     function habilitacao(){
       if(document.getElementById('sim_atuacao').checked == true){
-        document.getElementById('atuacao').disabled = false;
+        document.getElementById('input_atuacao').disabled = false;
       } else if(document.getElementById('nao_atuacao').checked == true){
-        document.getElementById('atuacao').disabled = true;
+        if(document.getElementById('input_atuacao').value != ""){
+            document.getElementById('input_atuacao').value = "";
+        }
+        document.getElementById('input_atuacao').disabled = true;
       }
-}
+    }
+
+    
+    window.onload = function() {
+        <?php if(!$errors->has('atuacao') && (old('atuacao') ==  "nao" || old('atuacao') ==  null)){?>
+            //document.getElementById('sim_atuacao').checked = false;
+            document.getElementById('nao_atuacao').checked  = true;
+            document.getElementById('input_atuacao').disabled = true;
+        <?php } else if((!$errors->has('atuacao') || $errors->has('atuacao')) && old('atuacao') !=  "nao"){?>
+            document.getElementById('sim_atuacao').checked = true;
+            //document.getElementById('nao_atuacao').checked  = false;
+            document.getElementById('input_atuacao').disabled = false;
+            document.getElementById('input_atuacao').value = "{{ old('atuacao') }}";
+        <?php } ?>
+    }
+    
+    
 </script>
 
 <div class="container">
@@ -95,12 +114,12 @@
                             <label for="atuacao" class="col-md-4 control-label">Atua em outro estado diferente do seu?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" id="nao_atuacao" name="atuacao" checked onClick="habilitacao()" value="nao">
-                                <label for="female">Não</label>&emsp;&emsp;
+                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" value="nao">
+                                <label for="nao_atuacao">Não</label>&emsp;&emsp;
                                 <input type="radio" id="sim_atuacao" name="atuacao" onClick="habilitacao()">
-                                <label for="male">Sim</label>
+                                <label for="sim_atuacao">Sim</label>
 
-                                <input id="atuacao" type="text" disabled placeholder="Ex: PE/PB/AL..." class="form-control" name="atuacao">
+                                <input id="input_atuacao" type="text" placeholder="Ex: PE/PB/AL..." class="form-control" name="atuacao">
 
                                 @if ($errors->has('atuacao'))
                                     <span class="help-block">
@@ -114,7 +133,7 @@
                             <label for="name" class="col-md-4 control-label">Idade</label>
 
                             <div class="col-md-6">
-                                <input id="idade" type="text" class="form-control" placeholder="Ex: 35"
+                                <input id="idade" type="numeric" class="form-control" placeholder="Ex: 35"
                                 name="idade" value="{{ old('idade') }}">
 
                                 @if ($errors->has('idade'))
@@ -129,10 +148,10 @@
                             <label for="sexo" class="col-md-4 control-label">Sexo</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="sexo" value="f" <?php if(!$errors->has('sexo') && old('sexo') ==  "f") {echo "checked";} ?>>
-                                <label for="male">Feminino</label>&emsp;&emsp;
-                                <input type="radio" name="sexo" value="m" <?php if(!$errors->has('sexo') && old('sexo') ==  "m") {echo "checked";} ?>>
-                                <label for="female">Masculino</label><br>
+                                <input id="fe"type="radio" name="sexo" value="f" <?php if(!$errors->has('sexo') && old('sexo') ==  "f") {echo "checked";} ?>>
+                                <label for="fe">Feminino</label>&emsp;&emsp;
+                                <input id="ma" type="radio" name="sexo" value="m" <?php if(!$errors->has('sexo') && old('sexo') ==  "m") {echo "checked";} ?>>
+                                <label for="ma">Masculino</label><br>
 
                                 @if ($errors->has('sexo'))
                                     <span class="help-block">
@@ -146,14 +165,14 @@
                             <label for="escolaridade" class="col-md-4 control-label">Nível Escolaridade (selecione o maior nível)</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="escolaridade" value="1" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "1") {echo "checked";} ?>> 
-                                <label for="male">Graduação</label>&emsp;&emsp;
-                                <input type="radio" name="escolaridade" value="2" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "2") {echo "checked";} ?>>
-                                <label for="female">Especialização</label><br>
-                                <input type="radio" name="escolaridade" value="3" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "3") {echo "checked";} ?>>
-                                <label for="male">Mestrado</label>&emsp;&emsp;&ensp;
-                                <input type="radio" name="escolaridade" value="4" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "4") {echo "checked";} ?>>
-                                <label for="female">Doutorado</label><br>
+                                <input id="grad" type="radio" name="escolaridade" value="1" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "1") {echo "checked";} ?>> 
+                                <label for="grad">Graduação</label>&emsp;&emsp;
+                                <input id="esp" type="radio" name="escolaridade" value="2" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "2") {echo "checked";} ?>>
+                                <label for="esp">Especialização</label><br>
+                                <input id="mest" type="radio" name="escolaridade" value="3" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "3") {echo "checked";} ?>>
+                                <label for="mest">Mestrado</label>&emsp;&emsp;&ensp;
+                                <input id="dout" type="radio" name="escolaridade" value="4" <?php if(!$errors->has('escolaridade') && old('escolaridade') ==  "4") {echo "checked";} ?>>
+                                <label for="dout">Doutorado</label><br>
 
                                 @if ($errors->has('escolaridade'))
                                     <span class="help-block">
@@ -168,10 +187,10 @@
                             disciplina votada para perícia grafotécnica?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="disciplina" value="1" <?php if(!$errors->has('disciplina') && old('disciplina') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Sim</label>&emsp;&emsp;
-                                <input type="radio" name="disciplina" value="0" <?php if(!$errors->has('disciplina') && old('disciplina') ==  "0") {echo "checked";} ?>>
-                                <label for="female">Não</label>
+                                <input id="sim_disc" type="radio" name="disciplina" value="1" <?php if(!$errors->has('disciplina') && old('disciplina') ==  "1") {echo "checked";} ?>>
+                                <label for="sim_disc">Sim</label>&emsp;&emsp;
+                                <input id="nao_disc" type="radio" name="disciplina" value="0" <?php if(!$errors->has('disciplina') && old('disciplina') ==  "0") {echo "checked";} ?>>
+                                <label for="nao_disc">Não</label>
 
                                 @if ($errors->has('disciplina'))
                                     <span class="help-block">
@@ -187,10 +206,10 @@
                             durante a graduação?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="abordagem" value="1" <?php if(!$errors->has('abordagem') && old('abordagem') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Sim</label>&emsp;&emsp;
-                                <input type="radio" name="abordagem" value="0" <?php if(!$errors->has('abordagem') && old('abordagem') ==  "0") {echo "checked";} ?>>
-                                <label for="female">Não</label>
+                                <input id="sim_abor" type="radio" name="abordagem" value="1" <?php if(!$errors->has('abordagem') && old('abordagem') ==  "1") {echo "checked";} ?>>
+                                <label for="sim_abor">Sim</label>&emsp;&emsp;
+                                <input id="nao_abor" type="radio" name="abordagem" value="0" <?php if(!$errors->has('abordagem') && old('abordagem') ==  "0") {echo "checked";} ?>>
+                                <label for="nao_abor">Não</label>
 
                                 @if ($errors->has('abordagem'))
                                     <span class="help-block">
@@ -219,12 +238,12 @@
                             <label for="area" class="col-md-4 control-label">Qual sua área de atuação?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="area" value="1" <?php if(!$errors->has('area') && old('area') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Perícia Grafotécnica</label><br>
-                                <input type="radio" name="area" value="2" <?php if(!$errors->has('area') && old('area') ==  "2") {echo "checked";} ?>>
-                                <label for="female">Documentoscopia</label><br>
-                                <input type="radio" name="area" value="3" <?php if(!$errors->has('area') && old('area') ==  "3") {echo "checked";} ?>>
-                                <label for="female">Ambas as áreas de atuação</label><br>
+                                <input id="grafo" type="radio" name="area" value="1" <?php if(!$errors->has('area') && old('area') ==  "1") {echo "checked";} ?>>
+                                <label for="grafo">Perícia Grafotécnica</label><br>
+                                <input id="docu" type="radio" name="area" value="2" <?php if(!$errors->has('area') && old('area') ==  "2") {echo "checked";} ?>>
+                                <label for="docu">Documentoscopia</label><br>
+                                <input id="ambas" type="radio" name="area" value="3" <?php if(!$errors->has('area') && old('area') ==  "3") {echo "checked";} ?>>
+                                <label for="ambas">Ambas as áreas de atuação</label><br>
 
                                 @if ($errors->has('area'))
                                     <span class="help-block">
@@ -239,14 +258,14 @@
                             área de perícia grafotécnica?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="tempo" value="1" <?php if(!$errors->has('tempo') && old('tempo') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Menos de 3 anos</label>&emsp;&emsp;
-                                <input type="radio" name="tempo" value="2" <?php if(!$errors->has('tempo') && old('tempo') ==  "2") {echo "checked";} ?>>
-                                <label for="female">Entre 4 e 5 anos</label><br>
-                                <input type="radio" name="tempo" value="3" <?php if(!$errors->has('tempo') && old('tempo') ==  "3") {echo "checked";} ?>>
-                                <label for="female">Entre 6 e 10 anos</label>&emsp;&emsp;
-                                <input type="radio" name="tempo" value="4" <?php if(!$errors->has('tempo') && old('tempo') ==  "4") {echo "checked";} ?>>
-                                <label for="female">Acima de 10 anos</label>
+                                <input id="3anos" type="radio" name="tempo" value="1" <?php if(!$errors->has('tempo') && old('tempo') ==  "1") {echo "checked";} ?>>
+                                <label for="3anos">Menos de 3 anos</label>&emsp;&emsp;
+                                <input id="4anos" type="radio" name="tempo" value="2" <?php if(!$errors->has('tempo') && old('tempo') ==  "2") {echo "checked";} ?>>
+                                <label for="4anos">Entre 4 e 5 anos</label><br>
+                                <input id="6anos" type="radio" name="tempo" value="3" <?php if(!$errors->has('tempo') && old('tempo') ==  "3") {echo "checked";} ?>>
+                                <label for="6anos">Entre 6 e 10 anos</label>&emsp;&emsp;
+                                <input id="10anos" type="radio" name="tempo" value="4" <?php if(!$errors->has('tempo') && old('tempo') ==  "4") {echo "checked";} ?>>
+                                <label for="10anos">Acima de 10 anos</label>
 
                                 @if ($errors->has('tempo'))
                                     <span class="help-block">
@@ -260,12 +279,12 @@
                             <label for="setor" class="col-md-4 control-label">Qual o setor de atuação?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="setor" value="1" <?php if(!$errors->has('setor') && old('setor') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Perito oficial</label>&emsp;&emsp;
-                                <input type="radio" name="setor" value="2" <?php if(!$errors->has('setor') && old('setor') ==  "2") {echo "checked";} ?>>
-                                <label for="female">Perito extra oficial</label><br>
-                                <input type="radio" name="setor" value="3" <?php if(!$errors->has('setor') && old('setor') ==  "3") {echo "checked";} ?>>
-                                <label for="female">Perito oficial e extra oficial</label>
+                                <input id="ofi" type="radio" name="setor" value="1" <?php if(!$errors->has('setor') && old('setor') ==  "1") {echo "checked";} ?>>
+                                <label for="ofi">Perito oficial</label>&emsp;&emsp;
+                                <input id="extra" type="radio" name="setor" value="2" <?php if(!$errors->has('setor') && old('setor') ==  "2") {echo "checked";} ?>>
+                                <label for="extra">Perito extra oficial</label><br>
+                                <input id="ofiextra" type="radio" name="setor" value="3" <?php if(!$errors->has('setor') && old('setor') ==  "3") {echo "checked";} ?>>
+                                <label for="ofiextra">Perito oficial e extra oficial</label>
 
                                 @if ($errors->has('setor'))
                                     <span class="help-block">
@@ -279,16 +298,17 @@
                             <label for="experiencia" class="col-md-4 control-label">Experiência profissional</label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="experiencia" value="1" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "1") {echo "checked";} ?>>
-                                <label for="male">Serviço público</label>&emsp;&emsp;
-                                <input type="radio" name="experiencia" value="2" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "2") {echo "checked";} ?>>
-                                <label for="female">Serviço privado</label><br>
-                                <input type="radio" name="experiencia" value="3" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "3") {echo "checked";} ?>>
-                                <label for="female">Serviço público e privado</label>
+                                <input id="publico" type="radio" name="experiencia" value="1" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "1") {echo "checked";} ?>>
+                                <label for="publico">Serviço público</label>&emsp;&emsp;
+                                <input id="privado"type="radio" name="experiencia" value="2" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "2") {echo "checked";} ?>>
+                                <label for="privado">Serviço privado</label><br>
+                                <input id="pupri" type="radio" name="experiencia" value="3" <?php if(!$errors->has('experiencia') && old('experiencia') ==  "3") {echo "checked";} ?>>
+                                <label for="pupri">Serviço público e privado</label>
+                            
 
                                 @if ($errors->has('experiencia'))
                                     <span class="help-block">
-                                        <strong><{{ $errors->first('experiencia') }}</strong>
+                                        <strong>{{ $errors->first('experiencia') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -298,7 +318,7 @@
                             <label for="password" class="col-md-4 control-label">Senha</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="password" type="password" placeholder="Mínimo de 6 caracteres" class="form-control" name="password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -312,7 +332,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">Confirme Senha</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                <input id="password-confirm" type="password" placeholder="Digite a senha novamente" class="form-control" name="password_confirmation">
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
