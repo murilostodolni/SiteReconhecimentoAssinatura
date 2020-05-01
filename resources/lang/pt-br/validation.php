@@ -60,7 +60,7 @@ return [
     'not_in'               => 'The selected :attribute is invalid.',
     'numeric'              => 'Campo deve conter apenas números.',
     'present'              => 'The :attribute field must be present.',
-    'regex'                => 'Campo está no formato incorreto.',
+    'regex'                => 'Campo não está no formato correto (observe o exemplo clicando em não).',
     'required'             => 'Campo obrigatório.', //':attribute é obrigatório.',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',

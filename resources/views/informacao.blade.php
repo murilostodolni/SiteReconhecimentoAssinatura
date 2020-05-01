@@ -9,11 +9,13 @@
         if(document.getElementById('concordo').checked == true){
             window.location.href = "{{url('/home')}}";
         } else {
-            document.getElementById('click').innerHTML = "Aceite os termos para iniciar análise.";
+            document.getElementById('click').style.display = "block";
+            document.getElementById('click').innerHTML = "<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>&ensp;Aceite os termos para iniciar a análise.";
         }
     }
     function check(){
         if(document.getElementById('concordo').checked == true){
+            document.getElementById('click').style.display = "none";
             document.getElementById('click').innerHTML = "";
         }
     }
@@ -52,7 +54,10 @@
                         <br><br>
                         <a class="btn btn-primary" role="button" id='botao' onClick="habilitacao()">
                         <i class="glyphicon glyphicon-share-alt"></i>&ensp;Iniciar Análises</a>
-                        <strong><div id="click" style="color:red"></div></strong>
+                        <br><br>
+                        <div class="alert alert-danger" role="alert" id="click" style='display: none;'>
+                            
+                        </div>
                 </div>
             </div>
         </div>

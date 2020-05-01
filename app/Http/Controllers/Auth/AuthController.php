@@ -56,7 +56,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:50|unique:users',
             'password' => 'required|min:6|confirmed',
             'uf' => 'required',
-            'atuacao' => 'required|max:30|regex:/[A-Z][A-Z]((\/[A-Z][A-Z]))*$/',
+            'atuacao' => 'required|max:30|regex:/^([A-Z][A-Z])(\/[A-Z][A-Z])*$/',
             'idade' => 'numeric|required|between:1,99',
             'sexo' => 'required',
             'escolaridade' => 'required',

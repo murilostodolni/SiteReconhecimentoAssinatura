@@ -15,11 +15,15 @@
 
     
     window.onload = function() {
-        <?php if(!$errors->has('atuacao') && (old('atuacao') ==  "nao" || old('atuacao') ==  null)){?>
+        <?php if($errors->has('atuacao') && old('atuacao') ==  "NA"){?>
             //document.getElementById('sim_atuacao').checked = false;
             document.getElementById('nao_atuacao').checked  = true;
             document.getElementById('input_atuacao').disabled = true;
-        <?php } else if((!$errors->has('atuacao') || $errors->has('atuacao')) && old('atuacao') !=  "nao"){?>
+        <?php } else if(!$errors->has('atuacao') && (old('atuacao') ==  "NA" || old('atuacao') ==  null)){?>
+            //document.getElementById('sim_atuacao').checked = false;
+            document.getElementById('nao_atuacao').checked  = true;
+            document.getElementById('input_atuacao').disabled = true;
+        <?php } else if((!$errors->has('atuacao') || $errors->has('atuacao')) && old('atuacao') !=  "NA"){?>
             document.getElementById('sim_atuacao').checked = true;
             //document.getElementById('nao_atuacao').checked  = false;
             document.getElementById('input_atuacao').disabled = false;
@@ -114,7 +118,7 @@
                             <label for="atuacao" class="col-md-4 control-label">Atua em outro estado diferente do seu?</label>
 
                             <div class="col-md-6">
-                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" value="nao">
+                                <input type="radio" id="nao_atuacao" name="atuacao" onClick="habilitacao()" value="NA">
                                 <label for="nao_atuacao">Não</label>&emsp;&emsp;
                                 <input type="radio" id="sim_atuacao" name="atuacao" onClick="habilitacao()">
                                 <label for="sim_atuacao">Sim</label>
